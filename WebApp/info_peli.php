@@ -60,13 +60,13 @@
 		<div style="margin-left:10px; ">
 			<?php
 				echo "
-				<p> ID : 				<input id='info_peli_1' readonly=true value='". pg_fetch_result($result_2, 0, "id_peli") 			."'/> </p>
-				<p> Idioma audio : 		<input id='info_peli_1' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_audio") 		."'/> </p>
-				<p> Idioma subtitols : 	<input id='info_peli_1' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_subtitols") 	."'/> </p>
-				<p> Qualitat vídeo : 	<input id='info_peli_1' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_video") 	."'/> </p>
-				<p> Qualitat audio : 	<input id='info_peli_1' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_audio") 	."'/> </p>
-				<p> Any estrena : 		<input id='info_peli_1' readonly=true value='".	pg_fetch_result($result_2, 0, "any_estrena") 		."'/> </p>
-				<p> Director : 			<input id='info_peli_1' readonly=true value='".	pg_fetch_result($result_2, 0, "director") 			."'/> </p>
+				<p> ID : 				<input id='info_peli_1' value='". pg_fetch_result($result_2, 0, "id_peli") 			."'/> </p>
+				<p> Idioma audio : 		<input id='info_peli_2' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_audio") 		."'/> </p>
+				<p> Idioma subtitols : 	<input id='info_peli_3' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_subtitols") 	."'/> </p>
+				<p> Qualitat vídeo : 	<input id='info_peli_4' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_video") 	."'/> </p>
+				<p> Qualitat audio : 	<input id='info_peli_5' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_audio") 	."'/> </p>
+				<p> Any estrena : 		<input id='info_peli_6' readonly=true value='".	pg_fetch_result($result_2, 0, "any_estrena") 		."'/> </p>
+				<p> Director : 			<input id='info_peli_7' readonly=true value='".	pg_fetch_result($result_2, 0, "director") 			."'/> </p>
 				";
 				
 				if (pg_fetch_result($result_2, 0, "url_imdb") == "#") {
