@@ -1,0 +1,8 @@
+
+
+-- Configuració ALIAS al servidor Apache (sudo gedit /etc/apache2/sites-available/default) :
+
+	Alias /PELIS	"/media/DISK3/PROGRAMES_PROPIS/APLICACIONS WEB/Cataleg_Pelis/APP"
+	
+	-- Cal reiniciar el servidor després d'afegir el alias : sudo /etc/init.d/apache2 restart
+	-- Revisar que els arxius a servir tinguin permisos de lectura
