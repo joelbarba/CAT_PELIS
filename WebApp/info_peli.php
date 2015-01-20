@@ -54,29 +54,33 @@
 		">
 		
 		<?php 
-			echo "<img src='./Img/cataleg/". pg_fetch_result($result_2, 0, "nom_imatge") ."' height='350' width='250' style='border: solid 1px #333333; ' >";
+			echo '<img src="./Img/cataleg/'. pg_fetch_result($result_2, 0, 'nom_imatge') .'" 
+					height="350" width="250" 
+					id="id_img_caratula" onclick="canviar_caratula();"
+					style="border: solid 1px #333333; " >';
 		?>
 		
 		<div style="margin-left:10px; ">
 			<?php
-				echo "
-				<p> ID : 				<input id='info_peli_1' value='". pg_fetch_result($result_2, 0, "id_peli") 			."'/> </p>
-				<p> Idioma audio : 		<input id='info_peli_2' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_audio") 		."'/> </p>
-				<p> Idioma subtitols : 	<input id='info_peli_3' readonly=true value='". pg_fetch_result($result_2, 0, "idioma_subtitols") 	."'/> </p>
-				<p> Qualitat vídeo : 	<input id='info_peli_4' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_video") 	."'/> </p>
-				<p> Qualitat audio : 	<input id='info_peli_5' readonly=true value='". pg_fetch_result($result_2, 0, "qualitat_audio") 	."'/> </p>
-				<p> Any estrena : 		<input id='info_peli_6' readonly=true value='".	pg_fetch_result($result_2, 0, "any_estrena") 		."'/> </p>
-				<p> Director : 			<input id='info_peli_7' readonly=true value='".	pg_fetch_result($result_2, 0, "director") 			."'/> </p>
-				";
+				echo '
+				<p> ID : 				<input id="info_peli_1" value="'. pg_fetch_result($result_2, 0, 'id_peli') 			.'"/> </p>
+				<p> Idioma audio : 		<input id="info_peli_2" value="'. pg_fetch_result($result_2, 0, 'idioma_audio') 	.'"/> </p>
+				<p> Idioma subtitols : 	<input id="info_peli_3" value="'. pg_fetch_result($result_2, 0, 'idioma_subtitols') .'"/> </p>
+				<p> Qualitat vídeo : 	<input id="info_peli_4" value="'. pg_fetch_result($result_2, 0, 'qualitat_video') 	.'"/> </p>
+				<p> Qualitat audio : 	<input id="info_peli_5" value="'. pg_fetch_result($result_2, 0, 'qualitat_audio') 	.'"/> </p>
+				<p> Any estrena : 		<input id="info_peli_6" value="'. pg_fetch_result($result_2, 0, 'any_estrena') 		.'"/> </p>
+				<p> Director : 			<input id="info_peli_7" value="'. pg_fetch_result($result_2, 0, 'director') 		.'"/> </p>
+				';
 				
 				if (pg_fetch_result($result_2, 0, "url_imdb") == "#") {
-					echo "<img src='./Img/imdb_logo2.png' alt='No hi ha link'>";
+					echo '<img src="./Img/imdb_logo2.png" alt="No hi ha link" onclick="canviar_valor(\'id_link_imdb\', \'Link IMDB\');" >';
 				} else {
-					echo "
-						<a href='". pg_fetch_result($result_2, 0, "url_imdb") ."' target='_blank' > 
-							<img src='./Img/imdb_logo.png' alt='". pg_fetch_result($result_2, 0, "url_imdb") ."'>
+					echo '
+						<a href="'. pg_fetch_result($result_2, 0, 'url_imdb') .'" target="_blank" 
+							id="id_link_imdb" onclick="canviar_valor(\'id_link_imdb\', \'Link IMDB\');" > 
+							<img src="./Img/imdb_logo.png" alt="'. pg_fetch_result($result_2, 0, 'url_imdb') .'">
 						</a>
-					";
+					';
 				}
 				
 				echo " <br/> ";

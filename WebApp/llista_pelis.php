@@ -99,13 +99,24 @@
 			
 			if (mode_editar) 	$("input").removeAttr('readonly');
 			else 				$("input").attr('readonly', 'true'); 
-				
-
-
-
-			
 			
 		} 
+		
+		function canviar_caratula() {			
+			var valor_ini = $('#id_img_caratula').attr('src');
+			var valor = prompt('Nom de la imatge (a /Img/cataleg/)', valor_ini);
+			if (valor == null) valor = valor_ini;
+			$('#id_img_caratula').attr('src', valor);
+		}
+
+		function canviar_valor(id_elem, nom_prop) {
+			var valor_ini = $('#' + id_elem).attr('href');
+			var valor = prompt(nom_prop + ' :', valor_ini);
+			if (valor == null) valor = valor_ini;
+			$('#' + id_elem).attr('href', valor);
+			return false;
+		}
+
 		
 		
 		function Canvia_Color_Fons_1(elem) { elem.style.backgroundColor = '#AAFFAA'; elem.style.cursor = 'pointer'; }
