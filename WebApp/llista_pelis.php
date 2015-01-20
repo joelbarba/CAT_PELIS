@@ -19,6 +19,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title> Llista de Pelis </title>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	
 	<style>
 	
 		html,body,input,select{
@@ -30,6 +33,12 @@
 			background-color: #DDDDDD;
 			padding: 3px;
 		}
+		
+		input {
+			border: solid 1px #888888; 
+		}
+		
+		
 	</style>
 
 	
@@ -38,6 +47,7 @@
 	<script language="Javascript">
 	
 		var mode_editar = false;
+		var id_peli_sel;
 	
 		window.onload = function() {
 			seleccionar_peli(<?php echo pg_fetch_result($result, 0, "id_peli") ?>);	// Carregar la primera peli de la llista inicialment
@@ -45,6 +55,7 @@
 		
 		function seleccionar_peli(id_peli) {
 			
+			id_peli_sel = id_peli;
 			// Carregar peli al div lateral (petició AJAX)
 			
 			// alert ("Seleccionant peli amb id = " + id_peli);
@@ -57,6 +68,8 @@
 			xmlhttp.onreadystatechange = function() {
 	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					document.getElementById("id_div_peli").innerHTML = xmlhttp.responseText;
+					mode_editar = true;
+					editar_peli(id_peli_sel);
 				}
 			}
 			
@@ -70,28 +83,26 @@
 			// alert("Editant peli " + id_peli);
 			mode_editar = !mode_editar;
 			
-			if (mode_editar) {
-				document.getElementById("id_boto_editar").innerHTML = "OK";
-				document.getElementById("id_div_editar").style.backgroundColor = '#88DD88';
-				document.getElementById("id_div_editar").style.borderColor = '#00CC00';
+			$("#id_boto_editar").text((mode_editar ? "OK" : "Editar"));
+			
+			$("#id_div_editar")
+				.css('background-color', (mode_editar ? "#88DD88" : "#CCCCCC"))
+				.css('border-color', 	 (mode_editar ? "#00CC00" : "#888888"));
 				
-				document.getElementById("id_div_peli").style.backgroundColor = '#DDFFDD';
-				document.getElementById("id_div_info_peli").style.backgroundColor = '#AAEEAA';
-				document.getElementById("id_div_info_peli").style.borderColor = '#55FF55';
-				document.getElementById("id_div_arxius_peli").style.backgroundColor = '#AAEEAA';
-				document.getElementById("id_div_arxius_peli").style.borderColor = '#55FF55';
+			$("#id_div_peli").css('background-color', (mode_editar ? "#DDFFDD" : "#FFFFEE"));
+			
+			$("#id_div_info_peli, #id_div_arxius_peli")
+				.css('background-color', (mode_editar ? "#AAEEAA" : "#FFFFCC"))
+				.css('border-color', 	 (mode_editar ? "#55FF55" : "#AAAAAA"));
 				
-			} else {
-				document.getElementById("id_boto_editar").innerHTML = "Editar";
-				document.getElementById("id_div_editar").style.backgroundColor = '#CCCCCC';
-				document.getElementById("id_div_editar").style.borderColor = '#888888';
+			$("input").css('background-color', (mode_editar ? "#DDFFDD" : "#EEEEEE"));
+			
+			if (mode_editar) 	$("input").removeAttr('readonly');
+			else 				$("input").attr('readonly', 'true'); 
 				
-				document.getElementById("id_div_peli").style.backgroundColor = '#FFFFEE';
-				document.getElementById("id_div_info_peli").style.backgroundColor = '#FFFFCC';
-				document.getElementById("id_div_info_peli").style.borderColor = '#AAAAAA';
-				document.getElementById("id_div_arxius_peli").style.backgroundColor = '#FFFFCC';
-				document.getElementById("id_div_arxius_peli").style.borderColor = '#AAAAAA';				
-			}
+
+
+
 			
 			
 		} 
