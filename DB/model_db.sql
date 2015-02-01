@@ -16,6 +16,7 @@ COMMENT ON DATABASE "Cataleg_Pelis"  IS 'Catàleg de pelicules descarregades';
 -- Drop table Pelis_Down
 
 CREATE TABLE Pelis_Down (
+   control_id			numeric			not null,
    id_peli				numeric			not null, 
    id_versio			numeric			not null, 
    titol				text			not null,
@@ -26,15 +27,41 @@ CREATE TABLE Pelis_Down (
    url_filmaffinity		text			null,
    qualitat_video		text			null,
    qualitat_audio		text			null,
-   any_estrena					int				null,
+   any_estrena			int				null,
    director				text			null,
    CONSTRAINT Pelis_Down_PK PRIMARY KEY (id_peli, id_versio)
 ) 
-WITH (
-  OIDS = FALSE
-);
+WITH ( OIDS = FALSE );
 ALTER TABLE Pelis_Down   OWNER TO barba;
 COMMENT ON TABLE Pelis_Down  IS 'Pelicules descarregades';
+
+
+
+-- Drop table Pelis_Down_History
+
+CREATE TABLE Pelis_Down_History (
+   control_id			numeric			not null,
+   control_seq_mod		number			not null,
+   control_data_ini		date			not null,
+   control_data_fi		date			    null,
+   control_id			number			not null,   
+   id_peli				numeric			not null, 
+   id_versio			numeric			not null, 
+   titol				text			not null,
+   titol_original		text			null,
+   idioma_audio			char(3)			null,
+   idioma_subtitols		char(3)			null,
+   url_imdb				text			null,
+   url_filmaffinity		text			null,
+   qualitat_video		text			null,
+   qualitat_audio		text			null,
+   any_estrena			int				null,
+   director				text			null,
+   CONSTRAINT Pelis_Down_PK PRIMARY KEY (id_peli, id_versio)
+) 
+WITH ( OIDS = FALSE );
+ALTER TABLE Pelis_Down_History   OWNER TO barba;
+COMMENT ON TABLE Pelis_Down_History  IS 'Historic pelicules descarregades';
 
 
 

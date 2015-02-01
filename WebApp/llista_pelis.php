@@ -53,12 +53,10 @@
 			seleccionar_peli(<?php echo pg_fetch_result($result, 0, "id_peli") ?>);	// Carregar la primera peli de la llista inicialment
 		}
 		
+		// Carregar peli al div lateral (petició AJAX)
 		function seleccionar_peli(id_peli) {
 			
 			id_peli_sel = id_peli;
-			// Carregar peli al div lateral (petició AJAX)
-			
-			// alert ("Seleccionant peli amb id = " + id_peli);
 			
 			var xmlhttp;
 			if (window.XMLHttpRequest) {	xmlhttp = new XMLHttpRequest();						// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -69,19 +67,64 @@
 	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					document.getElementById("id_div_peli").innerHTML = xmlhttp.responseText;
 					mode_editar = true;
-					editar_peli(id_peli_sel);
+					editar_peli();
 				}
 			}
 			
-			xmlhttp.open("GET", "info_peli.php?id_peli=" + id_peli, true);
+			xmlhttp.open("GET", "info_peli.php?id_peli=" + id_peli_sel, true);
 			xmlhttp.send();
 			
 			return false;
 		}
 
-		function editar_peli(id_peli) { 
-			// alert("Editant peli " + id_peli);
+		// Modificar pelicula (petició AJAX)
+		function modificar_peli() {
+			
+			// alert ("Modificant peli");
+			
+			var xmlhttp;
+			if (window.XMLHttpRequest) {	xmlhttp = new XMLHttpRequest();						// code for IE7+, Firefox, Chrome, Opera, Safari
+	  		} else {						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");	// code for IE6, IE5
+			}
+	
+			xmlhttp.onreadystatechange = function() {
+	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					//if (xmlhttp.responseText != 'ok') 
+						alert ('Atenció, error actualitzant la informació!');
+				}
+			}
+			
+			var ruta = $('#id_img_caratula').attr('src');
+			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+			
+			var urlMod = 'modificar_peli.php'
+					+ '?id_peli=' 			+ id_peli_sel
+					+ '&titol='				+ $('#info_peli_2').val()
+					+ '&titol_original='	+ $('#info_peli_3').val()
+					+ '&idioma_audio=' 		+ $('#info_peli_4').val()
+					+ '&idioma_subtitols='	+ $('#info_peli_5').val()
+					+ '&url_imdb=' 			+ $('#id_link_imdb').attr('data_href')
+					+ '&url_filmaffinity=' 	+ $('#id_link_film').attr('data_href')
+					+ '&qualitat_video=' 	+ $('#info_peli_6').val()
+					+ '&qualitat_audio=' 	+ $('#info_peli_7').val()
+					+ '&any_estrena=' 		+ $('#info_peli_8').val()
+					+ '&director=' 			+ $('#info_peli_9').val()
+					+ '&nom_imatge=' 		+ nom_imatge;
+
+				alert (urlMod);
+			
+			xmlhttp.open("GET", urlMod, true);
+			xmlhttp.send();
+			
+			return false;
+		}
+
+		
+
+		function editar_peli() { 
+
 			mode_editar = !mode_editar;
+			
 			
 			$("#id_boto_editar").text((mode_editar ? "OK" : "Editar"));
 			
@@ -102,20 +145,43 @@
 			
 		} 
 		
-		function canviar_caratula() {			
-			var valor_ini = $('#id_img_caratula').attr('src');
-			var valor = prompt('Nom de la imatge (a /Img/cataleg/)', valor_ini);
-			if (valor == null) valor = valor_ini;
-			$('#id_img_caratula').attr('src', valor);
+		function canviar_caratula() {
+		
+			var ruta = $('#id_img_caratula').attr('src');
+			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+			var arrel = ruta.slice(0, ruta.lastIndexOf('/') + 1);
+			
+			// var llista = ruta.split('/'); nom_imatge = llista[llista.length - 1];
+
+
+			var valor = prompt('Nom de la imatge (a /Img/cataleg/)', nom_imatge);
+			if (valor != null) $('#id_img_caratula').attr('src', arrel + valor);
 		}
 
-		function canviar_valor(id_elem, nom_prop) {
-			var valor_ini = $('#' + id_elem).attr('href');
-			var valor = prompt(nom_prop + ' :', valor_ini);
-			if (valor == null) valor = valor_ini;
-			$('#' + id_elem).attr('href', valor);
-			return false;
-		}
+		
+		function tractar_link(id_elem, nom_prop) {
+			
+			var desti = $('#' + id_elem).attr('data_href');
+			
+			if (!mode_editar && desti != '#')  { 
+				window.open(desti, '_blank');	// Saltar a l'enllaç
+				
+			} else { // Editar l'enllaç
+				
+				var valor = prompt(nom_prop + ' :', desti);
+				if (valor != null) {
+					if (valor == '') valor = '#';
+					$('#' + id_elem).attr('data_href', valor);
+				
+					// Actualitzar la imatge
+					if (valor == '#') 	$('#' + id_elem).attr('src', $('#' + id_elem).attr('img2'));
+					else 				$('#' + id_elem).attr('src', $('#' + id_elem).attr('img1'));
+					
+					modificar_peli();
+				}
+			}
+			
+		}		
 
 		
 		
