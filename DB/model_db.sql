@@ -28,6 +28,7 @@ CREATE TABLE Pelis_Down (
    qualitat_audio		text			null,
    any_estrena					int				null,
    director				text			null,
+   nom_imatge			text			null,
    CONSTRAINT Pelis_Down_PK PRIMARY KEY (id_peli, id_versio)
 ) 
 WITH (

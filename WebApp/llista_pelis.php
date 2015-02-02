@@ -1,6 +1,6 @@
 ﻿<?php // Recuperar totes les pelicules
 		
-	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
 		or die('No s\'ha pogut connectar : ' . pg_last_error());
 		
 	$consulta = "
@@ -107,6 +107,11 @@
 			
 		} 
 		
+		function canviar_caratula() {
+			id_img_caratula
+		
+		}
+		
 		
 		function Canvia_Color_Fons_1(elem) { elem.style.backgroundColor = '#AAFFAA'; elem.style.cursor = 'pointer'; }
 		function Canvia_Color_Fons_2(elem) { elem.style.backgroundColor = '#DDDDDD'; elem.style.cursor = 'initial'; }
@@ -122,7 +127,7 @@
 
 	<div style="
 		position: fixed; left: 30px; top: 30px;
-		width: 650px; height: 700px;
+		width: 400px; height: 700px;
 		overflow-x: hidden; overflow-y: scroll;
 		border: solid 1px #AAAAAA; 
 		padding:10px;
@@ -167,8 +172,8 @@
 	
 	
 	<div id="id_div_peli"  style="
-		position: fixed; left: 750px; top: 30px;
-		width: 630px; height: 680px;
+		position: fixed; left: 470px; top: 30px;
+		width: 550px; height: 680px;
 		overflow-x: hidden; overflow-y: hidden;
 		border: solid 1px #AAAAAA; 
 		padding:20px;

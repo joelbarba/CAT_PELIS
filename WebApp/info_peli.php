@@ -1,6 +1,6 @@
 ﻿<?php // Recuperar tots els arxius de la pelicula
 		
-	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
 	$consulta = "
@@ -54,7 +54,9 @@
 		">
 		
 		<?php 
-			echo "<img src='./Img/cataleg/". pg_fetch_result($result_2, 0, "nom_imatge") ."' height='350' width='250' style='border: solid 1px #333333; ' >";
+			echo '<img src="./Img/cataleg/'. pg_fetch_result($result_2, 0, 'nom_imatge') .'"
+					id="id_img_caratula"  onclick="canviar_caratula();"
+					height="350" width="250" style="border: solid 1px #333333; " >';
 		?>
 		
 		<div style="margin-left:10px; ">
