@@ -1,6 +1,6 @@
 ﻿<?php // Recuperar totes les pelicules
 		
-	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
 		or die('No s\'ha pogut connectar : ' . pg_last_error());
 		
 	$consulta = "
@@ -193,62 +193,64 @@
 
 </head>
 
-<body>
-
-	<h1> Llista de pelicules (<?php echo pg_numrows($result); ?>) </h1>
+<body style="
+	display:flex; 
+	flex-flow: row nowrap;
+	align-content: center;
+	align-items: flex-start;
+	padding-top: 10px; padding-bottom: 10px;
+	">
 
 	<div style="
-		position: fixed; left: 30px; top: 30px;
-		width: 650px; height: 700px;
-		overflow-x: hidden; overflow-y: scroll;
+		width: 40%; height: 100%; margin-right: 10px;
 		border: solid 1px #AAAAAA; 
-		padding:10px;
+		padding:5px;
 		background-color: #FFFFEE;
 		">
 		
-		<table style="font:normal normal normal 10px/10px Verdana; border: 0px solid black;">
-			<tbody>
-
-				<?php
-					
-					$x = 0;
-					
-					while ($x < pg_numrows($result) and $x < 200) {
-						echo '
-							<tr> 
-								<td style="width:30px"> '. ($x + 1) . ' </td> 
-								<td id="peli_' .  pg_fetch_result($result, $x, "id_peli") . '" 
-									onmouseenter="Canvia_Color_Fons_1(this);" 
-									onmouseleave="Canvia_Color_Fons_2(this);"
-									onclick="seleccionar_peli('.pg_fetch_result($result, $x, "id_peli").')"
-									style="width:500px"> 											
-										'. pg_fetch_result($result, $x, "titol_peli") .'											
-								</td>
-								<td style="padding: 0px;"> ';
-									if (pg_fetch_result($result, $x, "url_imdb") != "#") {
-										echo '<img src="./Img/imdb_petit.png">';
-									}
-									echo '
-								</td>
-							</tr>';
-						$x++;
-					}
-				?>
+		<h1 style="height: 3%;"> Llista de pelicules (<?php echo pg_numrows($result); ?>) </h1>
+		
+		<div style="height: 97%; overflow-x: hidden; overflow-y: scroll;">
 			
-			</tbody>		
-		</table>
-	
+			<table style="font:normal normal normal 10px/10px Verdana; border: 0px solid black;">
+				<tbody>
+
+					<?php
+						
+						$x = 0;
+						
+						while ($x < pg_numrows($result) and $x < 200) {
+							echo '
+								<tr> 
+									<td style="width:30px"> '. ($x + 1) . ' </td> 
+									<td id="peli_' .  pg_fetch_result($result, $x, "id_peli") . '" 
+										onmouseenter="Canvia_Color_Fons_1(this);" 
+										onmouseleave="Canvia_Color_Fons_2(this);"
+										onclick="seleccionar_peli('.pg_fetch_result($result, $x, "id_peli").')"
+										style="width:500px"> 											
+											'. pg_fetch_result($result, $x, "titol_peli") .'											
+									</td>
+									<td style="padding: 0px;"> ';
+										if (pg_fetch_result($result, $x, "url_imdb") != "#") {
+											echo '<img src="./Img/imdb_petit.png">';
+										}
+										echo '
+									</td>
+								</tr>';
+							$x++;
+						}
+					?>
+				
+				</tbody>		
+			</table>
+		</div>
 	</div>
-
-
-	
 	
 	<div id="id_div_peli"  style="
-		position: fixed; left: 750px; top: 30px;
-		width: 630px; height: 680px;
+		width: 60%; height: 95%;
 		overflow-x: hidden; overflow-y: hidden;
 		border: solid 1px #AAAAAA; 
-		padding:20px;
+		padding: 5px;
 		background-color: #FFFFEE;
 		">
 
@@ -257,3 +259,5 @@
 	
 </body>
 </html>
+
+<?php pg_close ($dbconn); ?>
