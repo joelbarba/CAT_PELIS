@@ -6,8 +6,8 @@
 	$consulta = "
 		select id_peli,
 			   titol 							as titol_peli,
-			   coalesce(url_imdb, '#')			as url_imdb,
-			   coalesce(url_filmaffinity, '#')	as url_filmaffinity
+			   coalesce(url_imdb, '')			as url_imdb,
+			   coalesce(url_filmaffinity, '')	as url_filmaffinity
 		  from Pelis_Down
 		 where id_peli > 0
 		 order by id_peli";
@@ -89,8 +89,8 @@
 	
 			xmlhttp.onreadystatechange = function() {
 	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					//if (xmlhttp.responseText != 'ok') 
-						alert ('Atenció, error actualitzant la informació!');
+					// alert ('resultat tx = ' + xmlhttp.responseText);
+					if (xmlhttp.responseText.substring(0, 2) != 'ok')  alert(xmlhttp.responseText.substring(2));
 				}
 			}
 			
@@ -111,7 +111,7 @@
 					+ '&director=' 			+ $('#info_peli_9').val()
 					+ '&nom_imatge=' 		+ nom_imatge;
 
-				alert (urlMod);
+			// alert (urlMod);
 			
 			xmlhttp.open("GET", urlMod, true);
 			xmlhttp.send();
@@ -138,10 +138,14 @@
 				.css('background-color', (mode_editar ? "#AAEEAA" : "#FFFFCC"))
 				.css('border-color', 	 (mode_editar ? "#55FF55" : "#AAAAAA"));
 				
-			$("input").css('background-color', (mode_editar ? "#DDFFDD" : "#EEEEEE"));
+			$(".info_peli_input").css('background-color', (mode_editar ? "#DDFFDD" : "#EEEEEE"));
 			
-			if (mode_editar) 	$("input").removeAttr('readonly');
-			else 				$("input").attr('readonly', 'true'); 
+			if (mode_editar) {	$(".info_peli_input").removeAttr('readonly');	$(".info_peli_sel").removeAttr('disabled');	}
+			else 			 {	$(".info_peli_input").attr('readonly', 'true'); $(".info_peli_sel").attr('disabled', ''); }
+			
+			// El campd de ID no es pot modificar mai
+			$("#info_peli_1").attr('readonly', 'true');
+			$("#info_peli_1").css('background-color', "#EEEEEE");
 			
 		} 
 		
@@ -163,18 +167,18 @@
 			
 			var desti = $('#' + id_elem).attr('data_href');
 			
-			if (!mode_editar && desti != '#')  { 
+			if (!mode_editar && desti != '')  { 
 				window.open(desti, '_blank');	// Saltar a l'enllaç
 				
 			} else { // Editar l'enllaç
 				
 				var valor = prompt(nom_prop + ' :', desti);
 				if (valor != null) {
-					if (valor == '') valor = '#';
+
 					$('#' + id_elem).attr('data_href', valor);
 				
 					// Actualitzar la imatge
-					if (valor == '#') 	$('#' + id_elem).attr('src', $('#' + id_elem).attr('img2'));
+					if (valor == '') 	$('#' + id_elem).attr('src', $('#' + id_elem).attr('img2'));
 					else 				$('#' + id_elem).attr('src', $('#' + id_elem).attr('img1'));
 					
 					modificar_peli();
@@ -225,7 +229,7 @@
 										'. pg_fetch_result($result, $x, "titol_peli") .'											
 								</td>
 								<td style="padding: 0px;"> ';
-									if (pg_fetch_result($result, $x, "url_imdb") != "#") {
+									if (pg_fetch_result($result, $x, "url_imdb") != "") {
 										echo '<img src="./Img/imdb_petit.png">';
 									}
 									echo '
