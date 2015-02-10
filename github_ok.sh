@@ -14,7 +14,7 @@ git status
 echo "--> GIT COMMIT : introduir el comentari"
 read comentari
 git commit -m '$comentari'
-echo "--> GIT PUSH github master (exportar branca master a GitHub)"
+echo "--> GIT PUSH github master (exportar branca master a GitHub) (usr: joelbarba pwd: cocaina02)"
 read x
 git push github master
 

@@ -37,7 +37,44 @@
 
 
 
-<?php echo "<h2> " . pg_fetch_result($result_2, 0, "titol") . "</h2>"; ?>
+
+<div style="width: 100%; height: 30px;
+		display: flex; flex-flow: column wrap; 
+		align-items: center; 
+		align-content: space-between; 
+		">
+
+	<?php echo "<h2> " . pg_fetch_result($result_2, 0, "titol") . "</h2>"; ?>
+
+	<div>
+	
+		<img src="./Img/icons/add.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+
+		<img src="./Img/icons/del.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+
+		<img src="./Img/icons/edit.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+		 
+	</div>
+
+</div>	
 
 <div id="id_div_info_peli" style="
 	width: 600px; height: 350px; padding:10px;
@@ -46,7 +83,8 @@
 	display: flex; flex-flow: column-reverse wrap; 
 	align-items: stretch; 
 	align-content: space-between;
-	">		
+	">
+	
 	
 	<div style="
 		display: flex; flex-flow: row wrap; 
