@@ -1,4 +1,4 @@
--- Database: "Cataleg_Pelis" mod al PC
+-- Database: "Cataleg_Pelis" mod al PC 2
 
 -- DROP DATABASE "Cataleg_Pelis";
 
