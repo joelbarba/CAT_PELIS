@@ -1,6 +1,6 @@
 ﻿<?php // Modificar la pelicula
 	
-	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
 	// $sentencia = 'update pelis_down set url_imdb = \''. $_REQUEST['url_imdb'] .'\' where id_peli = ' .$_REQUEST['id_peli']. ';';
