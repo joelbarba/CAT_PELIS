@@ -4,18 +4,18 @@
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
 	$consulta = "
-	select id_peli, titol,
-		   coalesce(titol_original, '?')	as titol_original,
-		   coalesce(nom_imatge, '#')		as nom_imatge,
-		   coalesce(idioma_audio, '?')		as idioma_audio,
-		   coalesce(idioma_subtitols, '?')	as idioma_subtitols,
-		   coalesce(qualitat_video, '?')	as qualitat_video,
-		   coalesce(qualitat_audio, '?')	as qualitat_audio,
-		   coalesce(to_char(any_estrena, '9999D'), '?')
+	select trim(to_char(id_peli, '000D')) as id_peli, titol,
+		   coalesce(titol_original, '')		as titol_original,
+		   coalesce(nom_imatge, '')			as nom_imatge,
+		   coalesce(idioma_audio, '')		as idioma_audio,
+		   coalesce(idioma_subtitols, '')	as idioma_subtitols,
+		   coalesce(qualitat_video, '')		as qualitat_video,
+		   coalesce(qualitat_audio, '')		as qualitat_audio,
+		   coalesce(trim(to_char(any_estrena, '9999D')), '')
 											as any_estrena,
-		   coalesce(director, '?')			as director,
-		   coalesce(url_imdb, '#')			as url_imdb,
-		   coalesce(url_filmaffinity, '#')	as url_film
+		   coalesce(director, '')			as director,
+		   coalesce(url_imdb, '')			as url_imdb,
+		   coalesce(url_filmaffinity, '')	as url_film
 	  from pelis_down
 	 where id_peli = ". $_REQUEST['id_peli'] .";";
 		 
@@ -37,7 +37,44 @@
 
 
 
-<?php echo "<h2> " . pg_fetch_result($result_2, 0, "titol") . "</h2>"; ?>
+
+<div style="width: 100%; height: 30px;
+		display: flex; flex-flow: column wrap; 
+		align-items: center; 
+		align-content: space-between; 
+		">
+
+	<?php echo "<h2> " . pg_fetch_result($result_2, 0, "titol") . "</h2>"; ?>
+
+	<div>
+	
+		<img src="./Img/icons/add.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+
+		<img src="./Img/icons/del.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+
+		<img src="./Img/icons/edit.png" style="width:22px; height:22px; margin-left:15px;"
+		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+		 onmouseleave="	this.style.cursor = 'initial';  "
+		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 img1="./Img/filmaffinity_logo.png"
+		 img2="./Img/filmaffinity_logo2.png"
+		 >
+		 
+	</div>
+
+</div>	
 
 <div id="id_div_info_peli" style="
 	width: 600px; height: 350px; padding:10px;
@@ -46,7 +83,8 @@
 	display: flex; flex-flow: column-reverse wrap; 
 	align-items: stretch; 
 	align-content: space-between;
-	">		
+	">
+	
 	
 	<div style="
 		display: flex; flex-flow: row wrap; 
@@ -64,52 +102,109 @@
 		<div style="margin-left:10px; ">
 			<?php
 			
-				if (pg_fetch_result($result_2, 0, "url_imdb") == "#")	$imatge1 = './Img/imdb_logo2.png';
-				else													$imatge1 = './Img/imdb_logo.png';
+			if (pg_fetch_result($result_2, 0, "url_imdb") == "")	$imatge1 = './Img/imdb_logo2.png';
+			else													$imatge1 = './Img/imdb_logo.png';
 
-				if (pg_fetch_result($result_2, 0, "url_film") == "#")	$imatge2 = './Img/filmaffinity_logo2.png';
-				else													$imatge2 = './Img/filmaffinity_logo.png';
-
-				
-				echo '
-				<p> ID : 				<input id="info_peli_1" value="'. pg_fetch_result($result_2, 0, 'id_peli') 			.'"/> </p>
-				<p> Títol : 			<input id="info_peli_2" value="'. pg_fetch_result($result_2, 0, 'titol') 			.'"/> </p>
-				<p> Títol original : 	<input id="info_peli_3" value="'. pg_fetch_result($result_2, 0, 'titol_original') 	.'"/> </p>
-				<p> Idioma audio : 		<input id="info_peli_4" value="'. pg_fetch_result($result_2, 0, 'idioma_audio') 	.'"/> </p>
-				<p> Idioma subtitols : 	<input id="info_peli_5" value="'. pg_fetch_result($result_2, 0, 'idioma_subtitols') .'"/> </p>
-				<p> Qualitat vídeo : 	<input id="info_peli_6" value="'. pg_fetch_result($result_2, 0, 'qualitat_video') 	.'"/> </p>
-				<p> Qualitat audio : 	<input id="info_peli_7" value="'. pg_fetch_result($result_2, 0, 'qualitat_audio') 	.'"/> </p>
-				<p> Any estrena : 		<input id="info_peli_8" value="'. pg_fetch_result($result_2, 0, 'any_estrena') 		.'"/> </p>
-				<p> Director : 			<input id="info_peli_9" value="'. pg_fetch_result($result_2, 0, 'director') 		.'"/> </p>
-
-				<img src="'.$imatge1.'"
-					 id="id_link_imdb"
-					 onmouseenter="	if ($(this).attr(\'data_href\') != \'#\') this.style.cursor = \'pointer\';  "
-					 onmouseleave="	this.style.cursor = \'initial\';  "
-					 onclick="		tractar_link(\'id_link_imdb\', \'Link IMDB\');  "
-					 data_href="'. pg_fetch_result($result_2, 0, 'url_imdb') .'"
-					 img1="./Img/imdb_logo.png"
-					 img2="./Img/imdb_logo2.png"
-					 >
-					 
-				<br/> 
-					 
-				<img src="'.$imatge2.'"
-					 id="id_link_film"
-					 onmouseenter="	if ($(this).attr(\'data_href\') != \'#\') this.style.cursor = \'pointer\';  "
-					 onmouseleave="	this.style.cursor = \'initial\';  "
-					 onclick="		tractar_link(\'id_link_film\', \'Link FilmAffinity\');  "
-					 data_href="'. pg_fetch_result($result_2, 0, 'url_film') .'"
-					 img1="./Img/filmaffinity_logo.png"
-					 img2="./Img/filmaffinity_logo2.png"					 
-					 >';					 
-
-				
-				echo " <br/> ";
-
-			?>
+			if (pg_fetch_result($result_2, 0, "url_film") == "")	$imatge2 = './Img/filmaffinity_logo2.png';
+			else													$imatge2 = './Img/filmaffinity_logo.png';
 			
-			</br> </br>
+			$llista_idiomes = array(' ', 'ESP', 'CAT', 'ENG', 'LAT');
+			$llista_q_video = array(' ', 'BR-Rip', 'DVD-Rip', 'VHS-Rip', 'TS-Screener');
+			$llista_q_audio = array(' ', 'BR-Rip', 'DVD-Rip', 'VHS-Rip', 'TS-Screener');
+		
+			?>
+
+			<p> ID : <input class='info_peli info_peli_input' 
+							id="info_peli_1" 
+							value="<?php echo pg_fetch_result($result_2, 0, 'id_peli'); ?>" 
+							style="width:28px;  text-align: center; margin-right:10px;" /> 
+			</p>
+
+			<p> Títol :  </br>
+			    <input class='info_peli info_peli_input' 
+						id="info_peli_2" 
+						value="<?php echo pg_fetch_result($result_2, 0, 'titol'); ?>" 
+						style="width:250px; margin-top: 2px;" /> 
+			</p>
+
+			<p> Títol original : <br/>
+				<input class='info_peli info_peli_input' 
+						id="info_peli_3" 
+						value="<?php echo pg_fetch_result($result_2, 0, 'titol_original');?>" 
+						style="width:250px; margin-top: 2px;" /> 
+			</p>
+
+			<p> Idioma audio :
+				<select class='info_peli info_peli_sel' id="info_peli_4" name="info_peli_4" disabled style="margin-right: 15px;">
+					<?php
+					for($x = 0; $x < count($llista_idiomes); $x++) {
+						echo '<option value="'.$llista_idiomes[$x].'"';
+						if (pg_fetch_result($result_2, 0, 'idioma_audio') == $llista_idiomes[$x]) { echo " selected"; }
+						echo '>'.$llista_idiomes[$x].'</option>';
+					} ?>
+				</select>
+			</p>
+			
+			<p> Idioma subtitols :
+				<select class='info_peli info_peli_sel' id="info_peli_5" name="info_peli_5" disabled>
+					<?php
+					for($x = 0; $x < count($llista_idiomes); $x++) {
+						echo '<option value="'.$llista_idiomes[$x].'"';
+						if (pg_fetch_result($result_2, 0, 'idioma_subtitols') == $llista_idiomes[$x]) { echo " selected"; }
+						echo '>'.$llista_idiomes[$x].'</option>';
+					} ?>
+				</select>
+			</p>
+
+			<p> Vídeo :  	
+				<select class='info_peli info_peli_sel' id="info_peli_6" name="info_peli_6" disabled style="margin-right: 15px;">
+					<?php
+					for($x = 0; $x < count($llista_q_video); $x++) {
+						echo '<option value="'.$llista_q_video[$x].'"';
+						if (pg_fetch_result($result_2, 0, 'qualitat_video') == $llista_q_video[$x]) { echo " selected"; }
+						echo '>'.$llista_q_video[$x].'</option>';
+					} ?>
+				</select>
+			</p>
+
+			<p> Audio :  	
+				<select class='info_peli info_peli_sel' id="info_peli_7" name="info_peli_7" disabled>
+					<?php
+					for($x = 0; $x < count($llista_q_audio); $x++) {
+						echo '<option value="'.$llista_q_audio[$x].'"';
+						if (pg_fetch_result($result_2, 0, 'qualitat_audio') == $llista_q_audio[$x]) { echo " selected"; }
+						echo '>'.$llista_q_audio[$x].'</option>';
+					} ?>
+				</select>
+			</p>
+			
+			<p> Any estrena : 		<input class='info_peli info_peli_input' id="info_peli_8" value="<?php echo pg_fetch_result($result_2, 0, 'any_estrena');	?>" style="width:50px;  text-align: center; margin-right:15px;"/> </p>
+			<p> Director : 			<input class='info_peli info_peli_input' id="info_peli_9" value="<?php echo pg_fetch_result($result_2, 0, 'director'); 		?>" style="width:140px; text-align: center;"/> </p>
+
+			<img src="<?php echo $imatge1; ?>"
+				 id="id_link_imdb" style="width:80px;"
+				 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+				 onmouseleave="	this.style.cursor = 'initial';  "
+				 onclick="		tractar_link('id_link_imdb', 'Link IMDB'); "
+				 data_href="<?php echo pg_fetch_result($result_2, 0, 'url_imdb'); ?>"
+				 img1="./Img/imdb_logo.png"
+				 img2="./Img/imdb_logo2.png"
+				 >
+				 
+
+				 
+			<img src="<?php echo $imatge2; ?>"
+				 id="id_link_film" style="width:150px;"
+				 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
+				 onmouseleave="	this.style.cursor = 'initial';  "
+				 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+				 data_href="<?php echo pg_fetch_result($result_2, 0, 'url_film') ?>"
+				 img1="./Img/filmaffinity_logo.png"
+				 img2="./Img/filmaffinity_logo2.png"					 
+				 >
+
+			
+			<br/> </br> </br>
 
 		</div>
 	</div>

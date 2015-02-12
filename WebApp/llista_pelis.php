@@ -1,13 +1,13 @@
 ﻿<?php // Recuperar totes les pelicules
 		
-	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
 		or die('No s\'ha pogut connectar : ' . pg_last_error());
 		
 	$consulta = "
 		select id_peli,
 			   titol 							as titol_peli,
-			   coalesce(url_imdb, '#')			as url_imdb,
-			   coalesce(url_filmaffinity, '#')	as url_filmaffinity
+			   coalesce(url_imdb, '')			as url_imdb,
+			   coalesce(url_filmaffinity, '')	as url_filmaffinity
 		  from Pelis_Down
 		 where id_peli > 0
 		 order by id_peli";
@@ -89,8 +89,8 @@
 	
 			xmlhttp.onreadystatechange = function() {
 	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					//if (xmlhttp.responseText != 'ok') 
-						alert ('Atenció, error actualitzant la informació!');
+					// alert ('resultat tx = ' + xmlhttp.responseText);
+					if (xmlhttp.responseText.substring(0, 2) != 'ok')  alert(xmlhttp.responseText.substring(2));
 				}
 			}
 			
@@ -111,7 +111,7 @@
 					+ '&director=' 			+ $('#info_peli_9').val()
 					+ '&nom_imatge=' 		+ nom_imatge;
 
-				alert (urlMod);
+			// alert (urlMod);
 			
 			xmlhttp.open("GET", urlMod, true);
 			xmlhttp.send();
@@ -138,10 +138,14 @@
 				.css('background-color', (mode_editar ? "#AAEEAA" : "#FFFFCC"))
 				.css('border-color', 	 (mode_editar ? "#55FF55" : "#AAAAAA"));
 				
-			$("input").css('background-color', (mode_editar ? "#DDFFDD" : "#EEEEEE"));
+			$(".info_peli_input").css('background-color', (mode_editar ? "#DDFFDD" : "#EEEEEE"));
 			
-			if (mode_editar) 	$("input").removeAttr('readonly');
-			else 				$("input").attr('readonly', 'true'); 
+			if (mode_editar) {	$(".info_peli_input").removeAttr('readonly');	$(".info_peli_sel").removeAttr('disabled');	}
+			else 			 {	$(".info_peli_input").attr('readonly', 'true'); $(".info_peli_sel").attr('disabled', ''); }
+			
+			// El campd de ID no es pot modificar mai
+			$("#info_peli_1").attr('readonly', 'true');
+			$("#info_peli_1").css('background-color', "#EEEEEE");
 			
 		} 
 		
@@ -163,18 +167,18 @@
 			
 			var desti = $('#' + id_elem).attr('data_href');
 			
-			if (!mode_editar && desti != '#')  { 
+			if (!mode_editar && desti != '')  { 
 				window.open(desti, '_blank');	// Saltar a l'enllaç
 				
 			} else { // Editar l'enllaç
 				
 				var valor = prompt(nom_prop + ' :', desti);
 				if (valor != null) {
-					if (valor == '') valor = '#';
+
 					$('#' + id_elem).attr('data_href', valor);
 				
 					// Actualitzar la imatge
-					if (valor == '#') 	$('#' + id_elem).attr('src', $('#' + id_elem).attr('img2'));
+					if (valor == '') 	$('#' + id_elem).attr('src', $('#' + id_elem).attr('img2'));
 					else 				$('#' + id_elem).attr('src', $('#' + id_elem).attr('img1'));
 					
 					modificar_peli();
@@ -193,64 +197,62 @@
 
 </head>
 
-<body style="
-	display:flex; 
-	flex-flow: row nowrap;
-	align-content: center;
-	align-items: flex-start;
-	padding-top: 10px; padding-bottom: 10px;
-	">
+<body>
+
+	<h1> Llista de pelicules (<?php echo pg_numrows($result); ?>) </h1>
 
 	<div style="
-		width: 40%; height: 100%; margin-right: 10px;
+		position: fixed; left: 30px; top: 30px;
+		width: 650px; height: 700px;
+		overflow-x: hidden; overflow-y: scroll;
 		border: solid 1px #AAAAAA; 
-		padding:5px;
+		padding:10px;
 		background-color: #FFFFEE;
 		">
 		
-		<h1 style="height: 3%;"> Llista de pelicules (<?php echo pg_numrows($result); ?>) </h1>
-		
-		<div style="height: 97%; overflow-x: hidden; overflow-y: scroll;">
-			
-			<table style="font:normal normal normal 10px/10px Verdana; border: 0px solid black;">
-				<tbody>
+		<table style="font:normal normal normal 10px/10px Verdana; border: 0px solid black;">
+			<tbody>
 
-					<?php
-						
-						$x = 0;
-						
-						while ($x < pg_numrows($result) and $x < 200) {
-							echo '
-								<tr> 
-									<td style="width:30px"> '. ($x + 1) . ' </td> 
-									<td id="peli_' .  pg_fetch_result($result, $x, "id_peli") . '" 
-										onmouseenter="Canvia_Color_Fons_1(this);" 
-										onmouseleave="Canvia_Color_Fons_2(this);"
-										onclick="seleccionar_peli('.pg_fetch_result($result, $x, "id_peli").')"
-										style="width:500px"> 											
-											'. pg_fetch_result($result, $x, "titol_peli") .'											
-									</td>
-									<td style="padding: 0px;"> ';
-										if (pg_fetch_result($result, $x, "url_imdb") != "#") {
-											echo '<img src="./Img/imdb_petit.png">';
-										}
-										echo '
-									</td>
-								</tr>';
-							$x++;
-						}
-					?>
-				
-				</tbody>		
-			</table>
-		</div>
+				<?php
+					
+					$x = 0;
+					
+					while ($x < pg_numrows($result) and $x < 200) {
+						echo '
+							<tr> 
+								<td style="width:30px"> '. ($x + 1) . ' </td> 
+								<td id="peli_' .  pg_fetch_result($result, $x, "id_peli") . '" 
+									onmouseenter="Canvia_Color_Fons_1(this);" 
+									onmouseleave="Canvia_Color_Fons_2(this);"
+									onclick="seleccionar_peli('.pg_fetch_result($result, $x, "id_peli").')"
+									style="width:500px"> 											
+										'. pg_fetch_result($result, $x, "titol_peli") .'											
+								</td>
+								<td style="padding: 0px;"> ';
+									if (pg_fetch_result($result, $x, "url_imdb") != "") {
+										echo '<img src="./Img/imdb_petit.png">';
+									}
+									echo '
+								</td>
+							</tr>';
+						$x++;
+					}
+				?>
+			
+			</tbody>		
+		</table>
+	
 	</div>
+
+
+	
 	
 	<div id="id_div_peli"  style="
-		width: 60%; height: 95%;
+		position: fixed; left: 750px; top: 30px;
+		width: 630px; height: 680px;
 		overflow-x: hidden; overflow-y: hidden;
 		border: solid 1px #AAAAAA; 
-		padding: 5px;
+		padding:20px;
 		background-color: #FFFFEE;
 		">
 
@@ -259,5 +261,3 @@
 	
 </body>
 </html>
-
-<?php pg_close ($dbconn); ?>
