@@ -1,6 +1,1 @@
 http://localhost/PELIS/
-
-prova modificat des de github
-again
-ara modificat des de local -> un altre canvi -> un aaaaaltre canvi
-tornat a modificar des de github
