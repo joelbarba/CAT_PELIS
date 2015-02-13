@@ -2,4 +2,4 @@ http://localhost/PELIS/
 
 prova modificat des de github
 again
-ara modificat des de local
+ara modificat des de local -> un altre canvi
