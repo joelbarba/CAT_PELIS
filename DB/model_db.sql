@@ -1,4 +1,4 @@
--- Database: "Cataleg_Pelis"
+-- Database: "Cataleg_Pelis" mod a github
 
 -- DROP DATABASE "Cataleg_Pelis";
 
@@ -10,7 +10,7 @@ CREATE DATABASE "Cataleg_Pelis"
        LC_CTYPE = 'ca_ES.UTF-8'
        CONNECTION LIMIT = -1;
 
-COMMENT ON DATABASE "Cataleg_Pelis"  IS 'Cat‡leg de pelicules descarregades';
+COMMENT ON DATABASE "Cataleg_Pelis"  IS 'Cat√†leg de pelicules descarregades';
 
 
 -- Drop table Pelis_Down
