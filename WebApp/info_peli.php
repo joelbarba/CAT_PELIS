@@ -1,6 +1,6 @@
 ﻿<?php // Recuperar tots els arxius de la pelicula
 		
-	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
+	$dbconn = pg_connect("host=localhost dbname=CAT_PELIS user=barba password=barba0001")
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
 	$consulta = "
@@ -263,3 +263,5 @@
 	
 
 </div>
+
+<?php pg_close ($dbconn); ?>
