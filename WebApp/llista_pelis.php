@@ -118,17 +118,55 @@
 			
 			return false;
 		}
+		
+		function prepara_nova_peli() {
+		
+			$.post("nova_peli.php",{},
+				function(data, status) { 
+					if (status == 'success') {
+						$('#id_div_peli').html(data);
+						// alert("Status: " + status + "\n Data: " + data);
+					}	
+				}
+			);
+		}
+
+		function insertar_peli() {
+		
+			var ruta = $('#id_img_caratula').attr('src');
+			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+		
+			$.post("insertar_peli.php",
+				{ 	titol				: $('#info_peli_2').val(),
+					titol_original		: $('#info_peli_3').val(),
+					idioma_audio		: $('#info_peli_4').val(),
+					idioma_subtitols	: $('#info_peli_5').val(),
+					url_imdb			: $('#id_link_imdb').attr('data_href'),
+					url_filmaffinity	: $('#id_link_film').attr('data_href'),
+					qualitat_video		: $('#info_peli_6').val(),
+					qualitat_audio		: $('#info_peli_7').val(),
+					any_estrena			: $('#info_peli_8').val(),
+					director			: $('#info_peli_9').val(),
+					nom_imatge			: nom_imatge
+				},
+				function(data, status) { 
+					if (status == 'success') {
+						alert("Status: " + status + "\n Data: " + data);
+					}	
+				}
+			);		
+			
+		}
+		
 
 		
 
 		function editar_peli() { 
 
 			mode_editar = !mode_editar;
-			
-			
-			$("#id_boto_editar").text((mode_editar ? "OK" : "Editar"));
-			
+
 			$("#id_div_editar")
+				.css('display', mode_editar ? 'flex' : 'none')
 				.css('background-color', (mode_editar ? "#88DD88" : "#CCCCCC"))
 				.css('border-color', 	 (mode_editar ? "#00CC00" : "#888888"));
 				
