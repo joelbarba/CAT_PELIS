@@ -150,8 +150,16 @@
 					nom_imatge			: nom_imatge
 				},
 				function(data, status) { 
+
 					if (status == 'success') {
-						alert("Status: " + status + "\n Data: " + data);
+						// alert("Status: " + status + "\n Data: " + data);	
+						if ($(data).find("resultat")[0].textContent == 'ok') {
+							var id_peli = $(data).find("id_peli")[0].textContent;
+							seleccionar_peli(id_peli);
+						} else {
+							alert ('No s\'ha pogut insertar correctament la peli');
+						}
+						
 					}	
 				}
 			);		

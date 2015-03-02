@@ -1,5 +1,6 @@
 ﻿<?php // Modificar la pelicula
 
+	include("class.respostaXML.php");
 	
 	$titol 				= $_REQUEST['titol']; 
 	$titol_original		= $_REQUEST['titol_original']; 
@@ -29,39 +30,48 @@
 	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
+	// Calcular nou ID_PELI
+	$consulta = "select coalesce((select max(id_peli) from pelis_down), 0) + 1 as nou_id_peli";
+	$resultat = pg_query($dbconn, $consulta);
+	$id_peli = pg_fetch_result($resultat, 0, 'nou_id_peli');
+	
+	
+	
+	
 	// $sentencia = 'update pelis_down set url_imdb = \''. $_REQUEST['url_imdb'] .'\' where id_peli = ' .$_REQUEST['id_peli']. ';';
 	$sentencia = "insert into pelis_down values (
-		coalesce((select max(id_peli) from pelis_down), 0) + 1,		-- id_peli
+		$1,	-- id_peli
 		1, 	-- id_versio
-		$1,	-- titol
-		$2,	-- titol_original
-		$3,	-- idioma_audio
-		$4,	-- idioma_subtitols
-		$5,	-- url_imdb
-		$6,	-- url_filmaffinity
-		$7,	-- qualitat_video
-		$8,	-- qualitat_audio
-		$9,	-- any_estrena
-		$10,-- director
-		$11	-- nom_imatge
+		$2,	-- titol
+		$3,	-- titol_original
+		$4,	-- idioma_audio
+		$5,	-- idioma_subtitols
+		$6,	-- url_imdb
+		$7,	-- url_filmaffinity
+		$8,	-- qualitat_video
+		$9,	-- qualitat_audio
+		$10,-- any_estrena
+		$11,-- director
+		$12 -- nom_imatge
 		);";
 
 	  
 	pg_prepare($dbconn, "sent1", $sentencia);
 	$result = pg_execute($dbconn, "sent1", array(
+											$id_peli,
 											$titol,
 											$titol_original,
 											$idioma_audio,
 											$idioma_subtitols,
 											$qualitat_video,
 											$qualitat_audio,
-											$any_est,
+											$any_estrena,
 											$director,
 											$url_imdb,
 											$url_filmaffinity,
 											$nom_imatge
 											));
-
+/*
 	if ($result == false) { 
 		echo "ko"; // . chr(13); 
 		echo pg_last_error($dbconn);
@@ -71,10 +81,13 @@
 		else { 					echo "ko"; }
 		echo $num_files . " registres actualitzats";
 	}
+*/
 	
-
-
-
 	pg_close ($dbconn);
+
+	$xml = new xmlResponse();	
+	$xml->ini_xml('ok');
+	$xml->registre(array("id_peli" => $id_peli, "camp2" => "valor2", "camp3" => "valor3"));
+	$xml->fi_xml();
 
 ?>
