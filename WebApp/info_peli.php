@@ -204,6 +204,8 @@
 		</div>
 	</div>
 
+
+
 	<div id="id_div_editar" 
 		 style="background-color: #CCCCCC; border: solid 1px #888888; align-self: flex-end; 
 			width: 70px; height: 30px;
@@ -217,8 +219,7 @@
 		>
 		<p id="id_boto_editar"> Ok </p>
 
-	</div>
-	
+	</div>	
 	
 </div>
 
@@ -226,7 +227,7 @@
 
 <div id="id_div_arxius_peli" style="
 	position: relative; left: 0px; top: 10px;
-	width: 600px; height: 240px;
+	width: 600px; height: 200px;
 	overflow-x: hidden; overflow-y: auto;
 	border: solid 1px #AAAAAA; 
 	padding:10px;
@@ -258,5 +259,28 @@
 	
 
 </div>
+
+<div style="
+	position: relative; left: 0px; top: 10px;
+	overflow: hidden;
+	margin-top: 10px;
+	display: flex; flex-flow: row-reverse wrap; align-items: center; 
+	">	
+
+	<div id="id_div_cancelar" class="boto_accio_on" style="margin-left:10px;"
+		onclick="if (mode_editar) { modificar_peli(); } editar_peli();"
+		onmouseenter="this.style.cursor = 'pointer';" 
+		onmouseleave="this.style.cursor = 'initial'"		
+		>
+		<p id="id_boto_ok"> Ok </p>
+	</div>
+
+	<div id="id_div_ok" class="boto_accio_on" >
+		<p id="id_boto_cancelar"> Cancelar </p>
+	</div>	
+	
+</div>
+
+
 
 <?php pg_close ($dbconn); ?>

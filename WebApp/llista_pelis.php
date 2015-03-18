@@ -38,6 +38,13 @@
 			border: solid 1px #888888; 
 		}
 		
+		.boto_accio_on {
+			background-color: #CCCCCC; 
+			border: solid 1px #888888;
+			width: 70px; height: 30px;
+			display: none; flex-flow: column wrap; align-items: center; 
+		}
+		
 		
 	</style>
 
@@ -173,7 +180,7 @@
 
 			mode_editar = !mode_editar;
 
-			$("#id_div_editar")
+			$("#id_div_ok, #id_div_cancelar")
 				.css('display', mode_editar ? 'flex' : 'none')
 				.css('background-color', (mode_editar ? "#88DD88" : "#CCCCCC"))
 				.css('border-color', 	 (mode_editar ? "#00CC00" : "#888888"));
