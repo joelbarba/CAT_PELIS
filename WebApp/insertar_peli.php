@@ -58,18 +58,18 @@
 	  
 	pg_prepare($dbconn, "sent1", $sentencia);
 	$result = pg_execute($dbconn, "sent1", array(
-											$id_peli,
-											$titol,
-											$titol_original,
-											$idioma_audio,
-											$idioma_subtitols,
-											$qualitat_video,
-											$qualitat_audio,
-											$any_estrena,
-											$director,
-											$url_imdb,
-											$url_filmaffinity,
-											$nom_imatge
+											$id_peli,			// 1
+											$titol,				// 2
+											$titol_original,    // 3
+											$idioma_audio,      // 4
+											$idioma_subtitols,  // 5
+											$url_imdb,          // 6 
+											$url_filmaffinity,  // 7 
+											$qualitat_video,    // 8
+											$qualitat_audio,    // 9
+											$any_estrena,       // 10
+											$director,          // 11
+											$nom_imatge         // 12
 											));
 /*
 	if ($result == false) { 
