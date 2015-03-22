@@ -10,7 +10,7 @@
 			   coalesce(url_filmaffinity, '')	as url_filmaffinity
 		  from Pelis_Down
 		 where id_peli > 0
-		 order by id_peli";
+		 order by id_peli desc";
 		 
 	$result = pg_query($dbconn, $consulta);	
 ?>
@@ -42,10 +42,11 @@
 			background-color: #CCCCCC; 
 			border: solid 1px #888888;
 			width: 70px; height: 30px;
-			display: none; flex-flow: column wrap; align-items: center; 
+			text-align: center;
+			flex-flow: column wrap; align-items: center;
 		}
 		
-		
+
 	</style>
 
 	
@@ -173,7 +174,31 @@
 			
 		}
 		
+		function eliminar_peli() {
 
+			if (!confirm('Estàs segur que vols eliminar la pel·lícula "' + $('#info_peli_2').val() + '"')) return;
+
+			$.post("eliminar_peli.php",
+				{ 	id_peli	: id_peli_sel },
+				function(data, status) { 
+
+					if (status == 'success') {
+						// alert("Status: " + status + "\n Data: " + data);	
+						if ($(data).find("resultat")[0].textContent == 'ok') {
+
+							if ($(data).find("count_peli")[0].textContent == '0') alert ('No s\'ha eliminat cap pelicula');
+							// if ($(data).find("count_arxius")[0].textContent == '0') alert ('No s\'ha eliminat cap arxiu');							
+							
+							var id_peli = $(data).find("id_peli_seg")[0].textContent;
+							seleccionar_peli(id_peli);							
+						} else {
+							alert ('No s\'ha pogut eliminar correctament la peli : ' + $(data).find("desc_error")[0].textContent);
+						}
+					}	
+				}
+			);		
+			
+		}
 		
 
 		function editar_peli() { 
@@ -201,6 +226,16 @@
 			$("#info_peli_1").css('background-color', "#EEEEEE");
 			
 		} 
+		
+		
+		function editar_fitxer(obj, id_arxiu) {
+			
+			var nom_nou = prompt('Canviar nom del arxiu :', obj.innerText);
+			
+			obj.innerText = nom_nou;
+			
+		}
+		
 		
 		function canviar_caratula() {
 		

@@ -59,7 +59,7 @@
 		<img src="./Img/icons/del.png" style="width:22px; height:22px; margin-left:15px;"
 		 onmouseenter="	if ($(this).attr('data_href') != '') this.style.cursor = 'pointer';  "
 		 onmouseleave="	this.style.cursor = 'initial';  "
-		 onclick="		tractar_link('id_link_film', 'Link FilmAffinity'); "
+		 onclick="eliminar_peli();"
 		 >
 
 		<img src="./Img/icons/edit.png" style="width:22px; height:22px; margin-left:15px;"
@@ -204,23 +204,6 @@
 		</div>
 	</div>
 
-
-
-	<div id="id_div_editar" 
-		 style="background-color: #CCCCCC; border: solid 1px #888888; align-self: flex-end; 
-			width: 70px; height: 30px;
-			display: none; flex-flow: column wrap; 
-			align-items: center; 
-			align-content: center; 
-			"
-		onclick="if (mode_editar) { modificar_peli(); } editar_peli();"
-		onmouseenter="this.style.cursor = 'pointer';" 
-		onmouseleave="this.style.cursor = 'initial'"		
-		>
-		<p id="id_boto_editar"> Ok </p>
-
-	</div>	
-	
 </div>
 
 
@@ -243,14 +226,19 @@
 
 			<?php						
 				$x = 0;						
-				while ($x < pg_numrows($result_1) and $x < 200) {							
-					echo '<tr> 
-							<td id="nom_fitxer_'. pg_fetch_result($result_1, $x, "num_arxiu"). '" > '
-								. pg_fetch_result($result_1, $x, "nom_arxiu"). '
-							</td>
-							<td> 700 MB </td> 
-						  </tr>';
-					$x++;
+				while ($x < pg_numrows($result_1) and $x < 200) {
+					?>
+					<tr> 
+						<td id="nom_fitxer_<?php echo pg_fetch_result($result_1, $x, "num_arxiu"); ?>"
+							onclick="editar_fitxer(this, <?php echo pg_fetch_result($result_1, $x, "num_arxiu"); ?>)"
+							onmouseenter="this.style.cursor = 'pointer';" 
+							onmouseleave="this.style.cursor = 'initial'"
+							>
+							<?php echo pg_fetch_result($result_1, $x, "nom_arxiu"); ?>
+						</td>
+						<td> 700 MB </td> 
+					</tr>
+					<?php $x++;
 				}
 			?>
 
@@ -270,12 +258,16 @@
 	<div id="id_div_cancelar" class="boto_accio_on" style="margin-left:10px;"
 		onclick="if (mode_editar) { modificar_peli(); } editar_peli();"
 		onmouseenter="this.style.cursor = 'pointer';" 
-		onmouseleave="this.style.cursor = 'initial'"		
+		onmouseleave="this.style.cursor = 'initial'"
 		>
 		<p id="id_boto_ok"> Ok </p>
 	</div>
 
-	<div id="id_div_ok" class="boto_accio_on" >
+	<div id="id_div_ok" class="boto_accio_on"
+		onclick="seleccionar_peli(id_peli_sel);" 
+		onmouseenter="this.style.cursor = 'pointer';" 
+		onmouseleave="this.style.cursor = 'initial'"		
+		>
 		<p id="id_boto_cancelar"> Cancelar </p>
 	</div>	
 	

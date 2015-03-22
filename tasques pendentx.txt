@@ -1,0 +1,7 @@
+Llista de tasques pendents :
+
+
+- Canviar les consultes AJAX de javascript a jQuery
+- Canviar el retorn de modificar_peli.php per utilitzar la class.respostaXML
+- Canviar la càrrega de la llista de pelis a un mòdul apart per poder recarrgar-la per AJAX quan s'afageix/modifica una peli
+- Afegir marca de peli seleccionada a la llista
