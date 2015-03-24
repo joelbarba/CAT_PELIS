@@ -2,10 +2,20 @@
 
 cd /media/DISK3/PROGRAMES_PROPIS/APLICACIONS\ WEB/CAT_PELIS
 
+
+
+exit 0;
+
+
+
+
+
+
+
 echo "Procediment per commitar canvis al repositori local i exportar-los a GitHub :"
 echo "Selecciona la branca correcte (C = casa / O = oficina) per defecte CASA :"
 read x
-if [ $x = "O" ]; then
+if [ "$x" = "O" ]; then
 	branca="oficina"
 else
 	branca="casa"
@@ -21,7 +31,7 @@ git status
 echo ""
 echo "--> GIT ADD (afegir tots els fitxers a Staged) (S/n)"
 read x
-if [ $x = "n" ]; then
+if [ "$x" = "n" ]; then
 	echo "No s'han afegit els fitxers"
 else
 	git add *
@@ -31,8 +41,9 @@ git status
 echo ""
 echo "--> GIT COMMIT : introduir el comentari"
 read comentari
-git commit -m \'$comentari\'
-#git commit
+comanda="git commit -m '$comentari'"
+echo $comanda;
+eval $comanda;
 
 echo ""
 echo "Exportar branca $branca a GITHUB"

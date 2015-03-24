@@ -2,6 +2,7 @@
 
 cd /media/DISK3/PROGRAMES_PROPIS/APLICACIONS\ WEB/CAT_PELIS
 
+
 echo "Procediment per commitar canvis al repositori local i exportar-los a GitHub :"
 echo "Selecciona la branca correcte (C = casa / O = oficina) per defecte CASA :"
 read x
@@ -31,8 +32,9 @@ git status
 echo ""
 echo "--> GIT COMMIT : introduir el comentari"
 read comentari
-git commit -m \'$comentari\'
-#git commit
+comanda="git commit -m '$comentari'"
+echo $comanda;
+eval $comanda;
 
 echo ""
 echo "Exportar branca $branca a GITHUB"
