@@ -13,35 +13,17 @@
 	or die('No s\'ha pogut connectar : ' . pg_last_error());
 
 	// $sentencia = 'update pelis_down set url_imdb = \''. $_REQUEST['url_imdb'] .'\' where id_peli = ' .$_REQUEST['id_peli']. ';';
-	$sentencia = "update pelis_down set
-		titol 				= $1,
-		titol_original		= $2,
-		idioma_audio		= $3,
-		idioma_subtitols	= $4,
-		qualitat_video      = $5,
-		qualitat_audio      = $6,
-		any_estrena         = $7,
-		director            = $8,
-		url_imdb 			= $9,
-		url_filmaffinity 	= $10,
-		nom_imatge          = $11
-	  where id_peli = $12;";
-
+	$sentencia = "update arxius_pelis
+				   set nom_arxiu = $1
+				 where id_peli   = $2
+				   and id_versio = 1
+				   and num_arxiu = $3;";
 	  
 	pg_prepare($dbconn, "sent1", $sentencia);
 	$result = pg_execute($dbconn, "sent1", array(
-											$_REQUEST['titol'],
-											$_REQUEST['titol_original'],
-											$_REQUEST['idioma_audio'],
-											$_REQUEST['idioma_subtitols'],
-											$_REQUEST['qualitat_video'],
-											$_REQUEST['qualitat_audio'],
-											$any_est,
-											$_REQUEST['director'],
-											$_REQUEST['url_imdb'],
-											$_REQUEST['url_filmaffinity'],
-											$_REQUEST['nom_imatge'],
-											$_REQUEST['id_peli']
+											$_REQUEST['nom_arxiu'],
+											$_REQUEST['id_peli'],
+											$_REQUEST['num_arxiu']
 											));
 
 	if ($result == false) { 

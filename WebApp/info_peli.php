@@ -217,7 +217,7 @@
 	background-color: #FFFFCC;
 	">		
 
-
+	<a href="file://localhost/media/DISK3/PROGRAMES_PROPIS/APLICACIONS%20WEB/CAT_PELIS/WebApp/Img/500px-IMDB.png"> IMATGEEEEE </a>
 
 	<table style="width: 570px; font-size: 10px;" >
 		<thead> <tr> <th style="width: 500px; text-align: left;" > Fitxer </th> <th> MB </th> </tr> </thead>
@@ -230,7 +230,9 @@
 					?>
 					<tr> 
 						<td id="nom_fitxer_<?php echo pg_fetch_result($result_1, $x, "num_arxiu"); ?>"
-							onclick="editar_fitxer(this, <?php echo pg_fetch_result($result_1, $x, "num_arxiu"); ?>)"
+							onclick="editar_fitxer(this, 
+													<?php echo pg_fetch_result($result_2, 0, 'id_peli'); ?>, 
+													<?php echo pg_fetch_result($result_1, $x, "num_arxiu"); ?>);"
 							onmouseenter="this.style.cursor = 'pointer';" 
 							onmouseleave="this.style.cursor = 'initial'"
 							>

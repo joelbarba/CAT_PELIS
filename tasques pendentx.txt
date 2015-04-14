@@ -1,7 +1,12 @@
 Llista de tasques pendents :
 
 
+ok - Canviar el retorn de modificar_peli.php per utilitzar la class.respostaXML
+ok - Transacció ajax de modificar fitxer
+
 - Canviar les consultes AJAX de javascript a jQuery
-- Canviar el retorn de modificar_peli.php per utilitzar la class.respostaXML
 - Canviar la càrrega de la llista de pelis a un mòdul apart per poder recarrgar-la per AJAX quan s'afageix/modifica una peli
 - Afegir marca de peli seleccionada a la llista
+- Afegir fitxer
+- Eliminar fitxer
+- Canviar la modificació del fitxer (llançament de la transacció ajax) al botó del ok de modificació peli

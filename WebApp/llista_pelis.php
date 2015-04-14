@@ -89,42 +89,36 @@
 		function modificar_peli() {
 			
 			// alert ("Modificant peli");
-			
-			var xmlhttp;
-			if (window.XMLHttpRequest) {	xmlhttp = new XMLHttpRequest();						// code for IE7+, Firefox, Chrome, Opera, Safari
-	  		} else {						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");	// code for IE6, IE5
-			}
-	
-			xmlhttp.onreadystatechange = function() {
-	  			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					// alert ('resultat tx = ' + xmlhttp.responseText);
-					if (xmlhttp.responseText.substring(0, 2) != 'ok')  alert(xmlhttp.responseText.substring(2));
-				}
-			}
-			
+
 			var ruta = $('#id_img_caratula').attr('src');
 			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
-			
-			var urlMod = 'modificar_peli.php'
-					+ '?id_peli=' 			+ id_peli_sel
-					+ '&titol='				+ $('#info_peli_2').val()
-					+ '&titol_original='	+ $('#info_peli_3').val()
-					+ '&idioma_audio=' 		+ $('#info_peli_4').val()
-					+ '&idioma_subtitols='	+ $('#info_peli_5').val()
-					+ '&url_imdb=' 			+ $('#id_link_imdb').attr('data_href')
-					+ '&url_filmaffinity=' 	+ $('#id_link_film').attr('data_href')
-					+ '&qualitat_video=' 	+ $('#info_peli_6').val()
-					+ '&qualitat_audio=' 	+ $('#info_peli_7').val()
-					+ '&any_estrena=' 		+ $('#info_peli_8').val()
-					+ '&director=' 			+ $('#info_peli_9').val()
-					+ '&nom_imatge=' 		+ nom_imatge;
 
-			// alert (urlMod);
-			
-			xmlhttp.open("GET", urlMod, true);
-			xmlhttp.send();
+			$.post("modificar_peli.php",
+				{ 	id_peli			:	id_peli_sel,
+					titol			:	$('#info_peli_2').val(),
+					titol_original	:	$('#info_peli_3').val(),
+					idioma_audio	: 	$('#info_peli_4').val(),
+					idioma_subtitols:	$('#info_peli_5').val(),
+					url_imdb		: 	$('#id_link_imdb').attr('data_href'),
+					url_filmaffinity: 	$('#id_link_film').attr('data_href'),
+					qualitat_video	: 	$('#info_peli_6').val(),
+					qualitat_audio	: 	$('#info_peli_7').val(),
+					any_estrena		: 	$('#info_peli_8').val(),
+					director		: 	$('#info_peli_9').val(),
+					nom_imatge		: 	nom_imatge
+				},
+				function(data, status) { 
+					// alert("Status: " + status + "\n Data: " + data);
+					if (status == 'success') {						
+						if ($(data).find("resultat")[0].textContent != 'ok') {
+							alert ('No s\'ha pogut modificar correctament la peli: ' + $(data).find("resultat")[0].textContent);
+						}
+					}	
+				}
+			);	
 			
 			return false;
+			
 		}
 		
 		function prepara_nova_peli() {
@@ -228,9 +222,27 @@
 		} 
 		
 		
-		function editar_fitxer(obj, id_arxiu) {
+		function editar_fitxer(obj, id_peli, num_arxiu) {
 			
 			var nom_nou = prompt('Canviar nom del arxiu :', obj.innerText);
+			if (nom_nou == '') return;
+
+			$.post("modificar_fitxer.php",
+				{ 	id_peli			:	id_peli,
+					num_arxiu		:	num_arxiu,
+					nom_arxiu		:	nom_nou
+				},
+				function(data, status) { 
+					alert("Status: " + status + "\n Data: " + data);
+					if (status == 'success') {						
+						if ($(data).find("resultat")[0].textContent != 'ok') {
+							alert ('No s\'ha pogut modificar correctament el nom del arxiu: ' + $(data).find("resultat")[0].textContent);
+						}
+					}	
+				}
+			);	
+
+
 			
 			obj.innerText = nom_nou;
 			
