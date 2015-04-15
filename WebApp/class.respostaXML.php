@@ -40,6 +40,14 @@ class xmlResponse {
 		}
     }
   }
+  
+  function obrir_tag($nom) {
+	echo "<" . $nom . ">\n";
+  }
+  
+  function tancar_tag($nom) {
+	echo "</" . $nom . ">\n";
+  }  
 
   function fi_xml() {
     echo "</resposta>\n";

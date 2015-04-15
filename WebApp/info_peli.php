@@ -217,8 +217,6 @@
 	background-color: #FFFFCC;
 	">		
 
-	<a href="file://localhost/media/DISK3/PROGRAMES_PROPIS/APLICACIONS%20WEB/CAT_PELIS/WebApp/Img/500px-IMDB.png"> IMATGEEEEE </a>
-
 	<table style="width: 570px; font-size: 10px;" >
 		<thead> <tr> <th style="width: 500px; text-align: left;" > Fitxer </th> <th> MB </th> </tr> </thead>
 
