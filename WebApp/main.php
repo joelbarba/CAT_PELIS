@@ -30,6 +30,24 @@
 		}
 		
 
+		
+		
+		
+		
+		
+		
+		
+		.fila_seleccionada {
+			background-color: #AAFFAA; 
+			cursor 			: pointer;
+		}
+
+		.fila_no_seleccionada {
+			background-color: #DDDDDD; 
+			cursor 			: initial;
+		}
+	
+
 	</style>
 
 	
@@ -46,53 +64,106 @@
 		}
 		
 		function carregar_llista_pelis() {
-
-		
+			
 			$.post("llistat_pelis.php",
 				{ 	id_peli			:	0
 				},
 				function(data, status) { 
 				
-					var xmlDoc = $.parseXML( xml );
-					alert (xmlDoc);
-				
-					alert("Status: " + status + "\n Data: " + $(data).find("*")[0].textContent);
-					if (status == 'success') {						
-						if ($(data).find("resultat")[0].textContent != 'ok') {
-							alert ('No s\'ha pogut carregar la llista de pelicules : ' + $(data).find("desc_error")[0].textContent);
+					// alert("Status: " + status + "\n Data: " + $(data).find("*")[0].textContent);
+					// alert('DOCUMENT XML : ' + data.children[0].innerHTML);
+					
+					if (status == 'success') {
+						
+						var resposta = data.children[0];
+						var resultat   = resposta.children[0].textContent;
+						var desc_error = resposta.children[1].textContent;
+						// alert ('resultat = ' + resultat + ', desc_error = ' + desc_error);
+
+						// if ($(data).find("resultat")[0].textContent != 'ok') {
+						if (resultat != 'ok') {							
+							alert ('No s\'ha pogut carregar la llista de pelicules : ' + desc_error);
+						} else {
+							muntar_llista_pelis(resposta);						
 						}
 					}	
 				}
-			);			
+			);
+			
+		}
+
 		
 		
-		
+		function muntar_llista_pelis(resposta_xml) {
+
+			/*	Format del XML a retornar :
+			<resposta>
+				0	<resultat> 		ok/ko 	</resultat>
+				1	<desc_error>	desc 	</desc_error>
+				2	<num_pelis>		999		</num_pelis>
+				3	<llista_pelis>
+					0	<peli>
+						0	<id_peli>		</id_peli>
+						1	<titol_peli>	</titol_peli>
+						2	<url_imdb>      </url_imdb>
+						3	<url_film>      </url_film>
+					</peli>
+				</llista_pelis>
+			</resposta>	*/	
 
 			$('#id_taula_llista_pelis').empty();
 			
-			var fila = '<tr> ';
-			fila += '	<td style="width:30px"> 9999 </td> ';
-			fila += '	<td style="width:500px" id="peli_9999"> titol pinicullla </td> ';
-			fila += '	<td style="padding: 0px;"> <img src="./Img/imdb_petit.png"> </td>';
-			fila += '</tr>';
-
+			var num_pelis = resposta_xml.children[2].textContent;
+			var llista = resposta_xml.children[3];
 			
-			$('#id_taula_llista_pelis').append(fila);
-			$('#id_taula_llista_pelis').append(fila);
-			$('#id_taula_llista_pelis').append(fila);
-			$('#id_taula_llista_pelis').append(fila);
+			for (t = 1; t <= num_pelis; ++t) {
+			
+				var id_peli  = llista.children[t - 1].children[0].textContent;
+				var titol    = llista.children[t - 1].children[1].textContent;
+				var url_imdb = llista.children[t - 1].children[2].textContent;
+				
+				var fila = '<tr> ';
+				fila += '	<td style="width:30px"> ' + t + ' </td> ';
+				fila += '	<td style="width:500px" id="id_llista_' + id_peli + '"> ' + titol + '</td> ';
+				fila += '	<td style="padding: 0px;"> ';
+				if (url_imdb != '') fila += '<img src="./Img/imdb_petit.png">';
+				fila += '	</td>';
+				fila += '</tr>';
+				
+				$('#id_taula_llista_pelis').append(fila);
+				
+				$('#id_llista_' + id_peli).hover(
+					function() { $(this).addClass('fila_seleccionada');		// mouseenter
+					},
+					function() { $(this).removeClass('fila_seleccionada'); 	// mouseleave
+					}
+				);
+				
+				$('#id_llista_' + id_peli).click(function() { seleccionar_peli(this.id.substr(10)) });
+			
+			}
+			
 		}
 
-
-
-
-
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
 		// Carregar peli al div lateral (petició AJAX)
 		function seleccionar_peli(id_peli) {
+			
+
+			alert("seleccionant " + id_peli);
+			return;
 			
 			id_peli_sel = id_peli;
 			
@@ -348,7 +419,7 @@
 			<tbody id="id_taula_llista_pelis">
 
 
-							<tr> 
+							<tr onmouseenter="$(this).toggleClass('fila_seleccionada');"> 
 								<td style="width:30px"> 9999 </td> 
 								<td id="peli_9999"
 									onmouseenter="Canvia_Color_Fons_1(this);" 
@@ -361,6 +432,18 @@
 									<img src="./Img/imdb_petit.png">
 								</td>
 							</tr>
+							<tr> 
+								<td style="width:30px"> 9999 </td> 
+								<td id="peli_9999"
+									onmouseenter="$(this).toggleClass('fila_seleccionada');"
+									style="width:500px"> 											
+										titol pelicula
+								</td>
+								<td style="padding: 0px;">
+									<img src="./Img/imdb_petit.png">
+								</td>
+							</tr>							
+							
 			
 			</tbody>		
 		</table>

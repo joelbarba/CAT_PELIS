@@ -1,21 +1,4 @@
-﻿<?php // Modificar la pelicula
-
-/*	Format del XML a retornar :
-
-	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-    <resposta>
-		<resultat> 		ok/ko 	</resultat>
-		<desc_error>	desc 	</desc_error>
-		<num_pelis>		999		</num_pelis>
-		<llista_pelis>
-			<id_peli>		</id_peli>
-			<titol_peli>	</titol_peli>
-			<url_imdb>      </url_imdb>
-			<url_film>      </url_film>
-		</llista_pelis>
-    </resposta>
-
-*/
+﻿<?php // Retorna un XML amb la llista de pelis
 
 	include("class.respostaXML.php");
 	$resultat = "";
@@ -35,68 +18,51 @@
 		 order by id_peli desc";
 		 
 	$result = pg_query($dbconn, $consulta);
-	
-	
-	
-/*	
-	
-	// $sentencia = 'update pelis_down set url_imdb = \''. $_REQUEST['url_imdb'] .'\' where id_peli = ' .$_REQUEST['id_peli']. ';';
-	$sentencia = "update pelis_down set
-		titol 				= $1,
-		titol_original		= $2,
-		idioma_audio		= $3,
-		idioma_subtitols	= $4,
-		qualitat_video      = $5,
-		qualitat_audio      = $6,
-		any_estrena         = $7,
-		director            = $8,
-		url_imdb 			= $9,
-		url_filmaffinity 	= $10,
-		nom_imatge          = $11
-	  where id_peli = $12;";
 
-	  
-	pg_prepare($dbconn, "sent1", $sentencia);
-	$result = pg_execute($dbconn, "sent1", array(
-											$_REQUEST['titol'],
-											$_REQUEST['titol_original'],
-											$_REQUEST['idioma_audio'],
-											$_REQUEST['idioma_subtitols'],
-											$_REQUEST['qualitat_video'],
-											$_REQUEST['qualitat_audio'],
-											$any_est,
-											$_REQUEST['director'],
-											$_REQUEST['url_imdb'],
-											$_REQUEST['url_filmaffinity'],
-											$_REQUEST['nom_imatge'],
-											$_REQUEST['id_peli']
-											));
-
-	if ($result == false) { 
+	if ($result == false) {
 		$resultat = "ko";
 		$desc_error = pg_last_error($dbconn);
+		$num_pelis = 0;
 	} else {
 		$resultat = "ok";
+		$num_pelis = pg_numrows($result);
+		// if ($num_pelis > 100) { $num_pelis = 100; }
 	}
-*/
-
-	$resultat = "ok";
-
+	
 
 	pg_close ($dbconn);
 
+	// Generació del XML :
+	
 	$xml = new xmlResponse();
 	$xml->ini_xml($resultat);
 	$xml->registre(array(
 			"desc_error" 	=> $desc_error,
-			"num_pelis"		=> 10
+			"num_pelis"		=> $num_pelis
 			));
-	$xml->obrir_tag('llista_pelis');
-	echo "eee";
-	$xml->tancar_tag('llista_pelis');
-			
+	
+	$xml->obrir_tag("llista_pelis");
+
+	for ($t = 0; $t < $num_pelis; $t++) { 
+	
+		$xml->obrir_tag('peli');
+		
+		$xml->registre(array(
+				"id_peli" 		=> pg_fetch_result($result, $t, "id_peli"),
+				"titol_peli"	=> pg_fetch_result($result, $t, "titol_peli"),
+				"url_imdb"		=> pg_fetch_result($result, $t, "url_imdb"),
+				"url_film"		=> pg_fetch_result($result, $t, "url_filmaffinity")
+				));	
+
+		$xml->tancar_tag('peli');
+	} 
+
+
+	$xml->tancar_tag("llista_pelis");
 	$xml->fi_xml();	
 
+	
+	
 /*	Format del XML a retornar :
 
 	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -105,10 +71,14 @@
 		<desc_error>	desc 	</desc_error>
 		<num_pelis>		999		</num_pelis>
 		<llista_pelis>
-			<id_peli>		</id_peli>
-			<titol_peli>	</titol_peli>
-			<url_imdb>      </url_imdb>
-			<url_film>      </url_film>
+			<peli>
+				<id_peli>		</id_peli>
+				<titol_peli>	</titol_peli>
+				<url_imdb>      </url_imdb>
+				<url_film>      </url_film>
+			</peli>
+			<peli></peli>
+			...
 		</llista_pelis>
     </resposta>
 
