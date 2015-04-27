@@ -159,7 +159,12 @@
 				}
 			);				
 
-			$('.peli_de_la_llista').click(function() { seleccionar_peli($(this).attr('id_peli')) });
+			$('.peli_de_la_llista').click(function() { 
+				
+				if (mode_act == 'mod') { if (confirm('Vols guardar els canvis de la modificació en curs?')) modificar_peli(); }
+				if (mode_act == 'add') { if (confirm('Vols guardar els canvis de la nova peli?')) insertar_peli(); }
+				seleccionar_peli($(this).attr('id_peli')) 
+			});
 			
 			// Si no hi ha cap id_peli seleccionat, apuntar a la primera de la llista
 			if (typeof id_peli_sel === 'undefined') id_peli_sel = llista.children[0].children[0].textContent; 
@@ -251,8 +256,7 @@
 						
 			$('#info_peli_titol').text(id_peli + ' : ' + titol);
 			$('#info_peli_imatge_caratula').attr('src', './Img/cataleg/' + nom_imatge);
-			alert('imatge = ' + $('#info_peli_imatge_caratula').attr('src'));
-			
+
 			$('#info_peli_1').val(id_peli);
 			$('#info_peli_2').val(titol);
 			$('#info_peli_3').val(titol_original);
@@ -304,9 +308,8 @@
 							alert ('No s\'ha pogut modificar correctament la peli: ' + $(data).find("resultat")[0].textContent);
 						}
 
-						canviar_mode('con');
-					} else {
-						canviar_mode('mod');
+						$('#id_taula_llista_pelis [id_peli=' + id_peli_sel + ']').text($('#info_peli_2').val());
+						seleccionar_peli(id_peli_sel);
 					}
 				}
 			);	
@@ -335,7 +338,7 @@
 				function(data, status) { 
 
 					if (status == 'success') {
-						alert('DOCUMENT XML : ' + data.children[0].innerHTML);
+						// alert('DOCUMENT XML : ' + data.children[0].innerHTML);
 				
 						var resposta = data.children[0];
 						var resultat   = resposta.children[0].textContent;
@@ -363,8 +366,51 @@
 				}
 			);			
 		}
+
 		
-		
+		function eliminar_peli() {
+
+			if (!confirm('Estàs segur que vols eliminar la pel·lícula "' + $('#info_peli_2').val() + '"')) return;
+
+			$.post("dades/eliminar_peli.php",
+				{ 	id_peli	: id_peli_sel },
+				function(data, status) { 
+
+					if (status == 'success') {
+						// alert('DOCUMENT XML : ' + data.children[0].innerHTML);
+				
+						var resposta = data.children[0];
+						var resultat   = resposta.children[0].textContent;
+						var desc_error = resposta.children[1].textContent;
+
+						if (resultat != 'ok') {
+							alert ('No s\'ha pogut eliminar correctament la peli : ' + desc_error);
+						} else {
+
+							/*	Format del XML a retornar :
+
+								<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+								<resposta>
+									0	<resultat> 		ok/ko 	</resultat>
+									1	<desc_error>	desc 	</desc_error>
+									2	<id_peli_seg>
+									3	<count_arxius>
+									4	<count_peli>
+								</resposta> */
+						
+							if (resposta.children[4].textContent == '0') alert ('No s\'ha eliminat cap pelicula');
+							
+							// $('#id_taula_llista_pelis [id_peli=' + id_peli_sel + ']').text('ELIMINAR');
+							$('#id_taula_llista_pelis [id_peli=' + id_peli_sel + ']').parent().remove();
+							
+							var id_peli = resposta.children[2].textContent;
+							seleccionar_peli(id_peli);
+						}
+					}	
+				}
+			);		
+			
+		}		
 		
 		
 		
@@ -449,6 +495,8 @@
 					.mouseleave(function() { this.style.cursor = 'initial'; });
 
 				$('#id_img_mod_peli').click(function() { canviar_mode('mod'); });
+				$('#id_img_del_peli').click(function() { eliminar_peli(); });
+				
 				
 				$('#id_img_add_peli').click(function() { 
 					// Deixar tots els camps buits per introduir info de peli nova
@@ -552,8 +600,9 @@
 					var ruta = $('#info_peli_imatge_caratula').attr('src');
 					var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
 					var arrel = ruta.slice(0, ruta.lastIndexOf('/') + 1);
+					if (arrel == '') arrel = './Img/cataleg/';
 
-					var valor = prompt('Nom de la imatge (a /Img/cataleg/)', nom_imatge);
+					var valor = prompt('Nom de la imatge (a ' + arrel + ')', nom_imatge);
 					if (valor != null) {
 						$('#info_peli_imatge_caratula').attr('src', arrel + valor);
 						if (mode_act == 'con') canviar_mode('mod');	// canviar a mode modificar
@@ -616,31 +665,7 @@
 
 
 		
-		function eliminar_peli() {
 
-			if (!confirm('Estàs segur que vols eliminar la pel·lícula "' + $('#info_peli_2').val() + '"')) return;
-
-			$.post("eliminar_peli.php",
-				{ 	id_peli	: id_peli_sel },
-				function(data, status) { 
-
-					if (status == 'success') {
-						// alert("Status: " + status + "\n Data: " + data);	
-						if ($(data).find("resultat")[0].textContent == 'ok') {
-
-							if ($(data).find("count_peli")[0].textContent == '0') alert ('No s\'ha eliminat cap pelicula');
-							// if ($(data).find("count_arxius")[0].textContent == '0') alert ('No s\'ha eliminat cap arxiu');							
-							
-							var id_peli = $(data).find("id_peli_seg")[0].textContent;
-							seleccionar_peli(id_peli);							
-						} else {
-							alert ('No s\'ha pogut eliminar correctament la peli : ' + $(data).find("desc_error")[0].textContent);
-						}
-					}	
-				}
-			);		
-			
-		}
 		
 
 
@@ -680,8 +705,6 @@
 
 		
 		
-		function Canvia_Color_Fons_1(elem) { elem.style.backgroundColor = '#AAFFAA'; elem.style.cursor = 'pointer'; }
-		function Canvia_Color_Fons_2(elem) { elem.style.backgroundColor = '#DDDDDD'; elem.style.cursor = 'initial'; }
 
 	</script>
 	
@@ -711,11 +734,7 @@
 
 							<tr onmouseenter="$(this).toggleClass('fila_seleccionada');"> 
 								<td style="width:30px"> 9999 </td> 
-								<td id="peli_9999"
-									onmouseenter="Canvia_Color_Fons_1(this);" 
-									onmouseleave="Canvia_Color_Fons_2(this);"
-									onclick="seleccionar_peli(9999);"
-									style="width:500px"> 											
+								<td id="peli_9999" style="width:500px"> 											
 										titol pelicula
 								</td>
 								<td style="padding: 0px;">
