@@ -3,10 +3,10 @@
 	include("class.respostaXML.php");
 	$resultat = "";
 	$desc_error = "";
-	
+
 	if ($_REQUEST['any_estrena'] == '') {	$any_est = null;
 	} else {								$any_est = $_REQUEST['any_estrena']; }
-	
+
 
 
 	$dbconn = pg_connect("host=localhost dbname=Cat_Pelis user=barba password=barba0001")
@@ -27,7 +27,7 @@
 		nom_imatge          = $11
 	  where id_peli = $12;";
 
-	  
+
 	pg_prepare($dbconn, "sent1", $sentencia);
 	$result = pg_execute($dbconn, "sent1", array(
 											$_REQUEST['titol'],
@@ -44,31 +44,35 @@
 											$_REQUEST['id_peli']
 											));
 
-	if ($result == false) { 
+	if ($result == false) {
 		$resultat = "ko";
 		$desc_error = pg_last_error($dbconn);
 	} else {
 		$resultat = "ok";
 	}
-	
+
 	pg_close ($dbconn);
 
 
-	$xml = new xmlResponse();	
+	$xml = new xmlResponse();
 	$xml->ini_xml($resultat);
 	$xml->registre(array(
-			"desc_error" 	=> $desc_error
+			"desc_error" 	=> $desc_error,
+			"id_peli_mod" 	=> $_REQUEST['id_peli'],
+			"titol_mod" 	=> $_REQUEST['titol']
 			));
-	$xml->fi_xml();	
-	
+	$xml->fi_xml();
+
 /*	Format del XML a retornar :
 
 	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
     <resposta>
 		<resultat> 		ok/ko 	</resultat>
 		<desc_error>	desc 	</desc_error>
+		<id_peli_mod>	9999 	</id_peli_mod>
+		<titol_mod>		xxxx 	</titol_mod>
     </resposta>
-*/	
-	
+*/
+
 
 ?>
