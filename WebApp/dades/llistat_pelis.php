@@ -16,7 +16,7 @@
 		  from Pelis_Down
 		 where id_peli > 0
 		 order by id_peli desc";
-		 
+
 	$result = pg_query($dbconn, $consulta);
 
 	if ($result == false) {
@@ -28,41 +28,41 @@
 		$num_pelis = pg_numrows($result);
 		// if ($num_pelis > 100) { $num_pelis = 100; }
 	}
-	
+
 
 	pg_close ($dbconn);
 
 	// Generació del XML :
-	
+
 	$xml = new xmlResponse();
 	$xml->ini_xml($resultat);
 	$xml->registre(array(
 			"desc_error" 	=> $desc_error,
 			"num_pelis"		=> $num_pelis
 			));
-	
+
 	$xml->obrir_tag("llista_pelis");
 
-	for ($t = 0; $t < $num_pelis; $t++) { 
-	
+	for ($t = 0; $t < $num_pelis; $t++) {
+
 		$xml->obrir_tag('peli');
-		
+
 		$xml->registre(array(
 				"id_peli" 		=> pg_fetch_result($result, $t, "id_peli"),
 				"titol_peli"	=> pg_fetch_result($result, $t, "titol_peli"),
 				"url_imdb"		=> pg_fetch_result($result, $t, "url_imdb"),
 				"url_film"		=> pg_fetch_result($result, $t, "url_filmaffinity")
-				));	
+				));
 
 		$xml->tancar_tag('peli');
-	} 
+	}
 
 
 	$xml->tancar_tag("llista_pelis");
-	$xml->fi_xml();	
+	$xml->fi_xml();
 
-	
-	
+
+
 /*	Format del XML a retornar :
 
 	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -82,7 +82,7 @@
 		</llista_pelis>
     </resposta>
 
-*/	
-	
+*/
+
 
 ?>
