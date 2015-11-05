@@ -274,7 +274,8 @@
 			var url_film 			= info_peli.children[11].textContent;
 
 			$('#info_peli_titol').text(id_peli + ' : ' + titol);
-			$('#info_peli_imatge_caratula').attr('src', './Img/cataleg/' + nom_imatge);
+			if (nom_imatge != '') 	$('#info_peli_imatge_caratula').attr('src', './Img/cataleg/' + nom_imatge);
+			else 					$('#info_peli_imatge_caratula').attr('src', './Img/cataleg/no_caratula.jpg');
 
 			$('#info_peli_1').val(id_peli);
 			$('#info_peli_2').val(titol);
@@ -300,6 +301,7 @@
 			// alert ("Modificant peli");
 			var ruta = $('#info_peli_imatge_caratula').attr('src');
 			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+			if (nom_imatge == 'no_caratula.jpg') nom_imatge = '';
 
 			$.post("dades/modificar_peli.php",
 				{ 	id_peli			:	id_peli_sel,
@@ -326,12 +328,17 @@
 						var desc_error  = resposta.children[1].textContent;
 						var id_peli_mod = resposta.children[2].textContent;
 						var titol_mod   = resposta.children[3].textContent;
+						var url_imdb    = resposta.children[4].textContent;
 
 						if (resultat != 'ok') {
 							alert ('No s\'ha pogut modificar correctament la peli: ' + $(data).find("resultat")[0].textContent);
 						}
 
-						$('#id_taula_llista_pelis [id_peli=' + id_peli_mod + ']').text(titol_mod);
+						var node = $('#id_taula_llista_pelis [id_peli=' + id_peli_mod + ']');
+						node.text(titol_mod);
+						if (url_imdb != '') node.next().html('<img src="./Img/imdb_petit.png">');
+						else 				node.next().html('');
+
 						seleccionar_peli(id_peli_sel);
 					}
 				}
@@ -344,6 +351,7 @@
 
 			var ruta = $('#info_peli_imatge_caratula').attr('src');
 			var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+			if (nom_imatge == 'no_caratula.jpg') nom_imatge = '';
 
 			$.post("dades/insertar_peli.php",
 				{ 	titol				: $('#info_peli_2').val(),
@@ -634,11 +642,13 @@
 				$('#info_peli_imatge_caratula').click(function() {
 					var ruta = $('#info_peli_imatge_caratula').attr('src');
 					var nom_imatge = ruta.slice(ruta.lastIndexOf('/') + 1);
+					if (nom_imatge == 'no_caratula.jpg') nom_imatge = '';
 					var arrel = ruta.slice(0, ruta.lastIndexOf('/') + 1);
 					if (arrel == '') arrel = './Img/cataleg/';
 
 					var valor = prompt('Nom de la imatge (a ' + arrel + ')', nom_imatge);
 					if (valor != null) {
+						if (valor == '') valor = 'no_caratula.jpg';
 						$('#info_peli_imatge_caratula').attr('src', arrel + valor);
 						if (mode_act == 'con') canviar_mode('mod');	// canviar a mode modificar
 						// modificar_peli();	// Fer efectiva la modificació sense haver de clicar el boto ok

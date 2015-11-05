@@ -59,7 +59,8 @@
 	$xml->registre(array(
 			"desc_error" 	=> $desc_error,
 			"id_peli_mod" 	=> $_REQUEST['id_peli'],
-			"titol_mod" 	=> $_REQUEST['titol']
+			"titol_mod" 	=> $_REQUEST['titol'],
+			"url_peli_mod" 	=> $_REQUEST['url_imdb']
 			));
 	$xml->fi_xml();
 
@@ -71,6 +72,7 @@
 		<desc_error>	desc 	</desc_error>
 		<id_peli_mod>	9999 	</id_peli_mod>
 		<titol_mod>		xxxx 	</titol_mod>
+		<url_peli_mod>	xxxx 	</url_peli_mod>
     </resposta>
 */
 
