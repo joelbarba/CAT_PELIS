@@ -1,0 +1,27 @@
+html,body,input,select{
+	font:normal normal normal 10px/10px Verdana;
+}
+
+
+input {
+	border: solid 1px #888888;
+}
+
+
+.boto_accio_on {
+	background-color: #CCCCCC;
+	border: solid 1px #888888;
+	width: 70px; height: 30px;
+	text-align: center;
+	flex-flow: column wrap; align-items: center;
+}
+
+.fila_seleccionada {
+	background-color: #AAFFAA;
+	cursor 			: pointer;
+}
+
+.fila_no_seleccionada {
+	background-color: #DDDDDD;
+	cursor 			: initial;
+}

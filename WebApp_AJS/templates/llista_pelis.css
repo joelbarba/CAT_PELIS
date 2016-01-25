@@ -1,0 +1,40 @@
+#id_cont_llista_pelis {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    padding-right: 3px;
+    background-color: rgb(255, 255, 238);
+}
+
+
+
+#id_taula_llista_pelis table {
+	font:normal normal normal 10px/10px Verdana;
+	/*border: 1px solid black;*/
+	/*border-collapse: separate;*/
+	/*border-spacing: 2px;*/
+}
+
+#id_taula_llista_pelis td {
+	border: solid 2px #ffffff;
+	padding: 3px;
+}
+
+#id_taula_llista_pelis tbody > tr {
+	background-color: #DDDDDD;
+	cursor 			: initial;
+}
+
+#id_taula_llista_pelis tbody > tr:hover {
+	background-color: #AAFFAA;
+	cursor 			: pointer;
+}
+
+
+
+
+
+.class_fila_peli_sel {
+	background-color: #33FF33;
+	cursor 			: pointer;
+}

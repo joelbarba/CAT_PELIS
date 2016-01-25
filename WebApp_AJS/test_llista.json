@@ -1,0 +1,25 @@
+[{
+	"id"	: 1,
+	"titol"	: "primera peli",
+	"link"	: "www.google.com"
+},{
+	"id"	: 2,
+	"titol"	: "segona peli",
+	"link"	: "www.google.com"
+},{
+	"id"	: 3,
+	"titol"	: "3a peli",
+	"link"	: "www.google.com"
+},{
+	"id"	: 4,
+	"titol"	: "se2332gona peli",
+	"link"	: "www.go23ogle.com"
+},{
+	"id"	: 5,
+	"titol"	: "fsdfsdfdspeli",
+	"link"	: "www.google.com"
+},{
+	"id"	: 6,
+	"titol"	: "last",
+	"link"	: "www.google.com"
+}]

@@ -1,0 +1,89 @@
+
+<div id="id_div_box_info_peli">
+    <div id="id_div_box_info_peli_titol" >                   
+        <div id="id_div_box_info_peli_nom">
+            {{ info_peli.id_peli }} : {{ info_peli.titol_old }}</div>
+        <div id="id_div_box_info_peli_menu">
+            <img id="id_img_add_peli" src="img/icons/add.png"  style="width:22px; height:22px; margin-left:15px;" title="Afegir">
+            <img id="id_img_del_peli" src="img/icons/del.png"  style="width:22px; height:22px; margin-left:15px;" title="Eliminar">
+            <img id="id_img_mod_peli" src="img/icons/edit.png" style="width:22px; height:22px; margin-left:15px;" title="Modificar">
+        </div>
+    </div>
+    <div id="id_div_box_info_peli_cont">
+        <div id="id_div_box_info_peli_left">
+            <div id="id_div_box_info_peli_caratula"
+                 >
+<!--                 <img id="info_peli_imatge_caratula" ng-src="../img/cataleg/id_0001.jpg" style="border: solid 1px #333333;" > -->
+            </div>
+        </div>
+
+
+        <div id="id_div_box_info_peli_right">
+            <input id="info_peli_1" value="¿?" style="display:none; width:28px;  text-align: center; margin-right:10px;">
+
+            <p> Títol :  <br>
+                <input ng-model="info_peli.titol" class="info_peli info_peli_input" id="info_peli_2" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
+            </p>
+
+            <p> Títol original : <br>
+                <input ng-model="info_peli.titol_original" class="info_peli info_peli_input" id="info_peli_3" value="" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
+            </p>
+
+            <p> Idioma audio :
+                <select ng-model="info_peli.idioma_audio" class="info_peli info_peli_sel" id="info_peli_4" name="info_peli_4" style="margin-right: 15px;">
+                    <option value="" selected=""></option>
+                    <option value="ESP">ESP</option>
+                    <option value="CAT">CAT</option>
+                    <option value="ENG">ENG</option>
+                    <option value="LAT">LAT</option>
+                </select>
+            </p>
+
+            <p> Idioma subtitols :
+                <select ng-model="info_peli.idioma_subtitols" class="info_peli info_peli_sel" id="info_peli_5" name="info_peli_5">
+                    <option value="" selected=""></option>
+                    <option value="ESP">ESP</option>
+                    <option value="CAT">CAT</option>
+                    <option value="ENG">ENG</option>
+                    <option value="LAT">LAT</option>
+                </select>
+            </p>
+
+            <p> Vídeo :
+                <select ng-model="info_peli.qualitat_video" class="info_peli info_peli_sel" id="info_peli_6" name="info_peli_6" style="margin-right: 15px;">
+                    <option value="" selected=""></option>
+                    <option value="BR-Rip">BR-Rip</option>
+                    <option value="DVD-Rip">DVD-Rip</option>
+                    <option value="VHS-Rip">VHS-Rip</option>
+                    <option value="TS-Screener">TS-Screener</option>
+                </select>
+            </p>
+
+            <p> Audio :
+                <select ng-model="info_peli.qualitat_audio" class="info_peli info_peli_sel" id="info_peli_7" name="info_peli_7">
+                    <option value="" selected=""></option>
+                    <option value="BR-Rip">BR-Rip</option>
+                    <option value="DVD-Rip">DVD-Rip</option>
+                    <option value="VHS-Rip">VHS-Rip</option>
+                    <option value="TS-Screener">TS-Screener</option>
+                </select>
+            </p>
+
+            <p> Any estrena : 		<input ng-model="info_peli.any_estrena"  class="info_peli info_peli_input" id="info_peli_8" value="9999" style="width: 50px; text-align: center; margin-right: 15px; border-color: rgb(136, 136, 136);"> </p>
+            <p> Director : 			<input ng-model="info_peli.director"     class="info_peli info_peli_input" id="info_peli_9" value="director" style="width: 20%; min-width: 100px; text-align: center; border-color: rgb(136, 136, 136);"> </p>
+
+            <img id="id_link_imdb" style="width:80px; margin-bottom: 2px;" 
+                 data_href="{{ info_peli.url_imdb }}"
+                 ng-src="{{ info_peli.img_imdb }}">
+
+            <img id="id_link_film"  style="width:150px; margin-bottom: 2px;" 
+                 data_href="{{ info_peli.url_film }}"
+                 ng-src="{{ info_peli.img_film }}">
+        </div>        
+    </div>
+</div>
+<div id="id_div_box_info_peli_bottom">
+        <input type='text' ng-model='var1' />
+        <input type='text' ng-model='var2' />
+        {{ info_peli }}
+</div>

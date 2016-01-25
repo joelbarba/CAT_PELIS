@@ -1,0 +1,26 @@
+<div id="id_cont_llista_pelis" 
+     ng-init="CTRL_llista_pelis.loadLlistaPelis();">
+
+    <table id="id_taula_llista_pelis">
+        <thead>
+          <tr>
+            <th style="width: 05%"></th>
+            <th style="width: 90%"></th>
+            <th style="width: 05%"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="peli in CTRL_llista_pelis.llista_pelis">
+
+                <td ng-click="CTRL_llista_pelis.selectPeli(peli.id);" 
+                    ng-class="{class_fila_peli_sel: peli.id === CTRL_llista_pelis.id_peli_sel}">{{ peli.id }}</td>
+
+                <td ng-click="CTRL_llista_pelis.selectPeli(peli.id);" 
+                    ng-class="{class_fila_peli_sel: peli.id === CTRL_llista_pelis.id_peli_sel}">{{ peli.titol }}</td>
+
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

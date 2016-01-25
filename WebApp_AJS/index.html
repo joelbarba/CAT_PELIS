@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="Modul_Principal">
+<head>
+    <title>Llista de pelis</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<!--    <script src="bootstrap/js/bootstrap.js"></script>-->
+
+    <link rel="stylesheet" href="main_styles.css">
+
+    <!-- src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" -->
+    <script src="JS/lib/jquery.js"></script>
+    <script src="JS/lib/angular.js"></script>
+    <script src="JS/lib/angular-route.js"></script>
+    <script src="JS/lib/angular-css.js"></script>
+<!--    <script src="JS/routes.js"></script>-->
+    <script src="JS/app.js"></script>
+
+    <!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
+
+
+	<script language="Javascript">
+        $(function() {
+            $(window).resize(function() { });
+
+        });
+    </script>
+
+    <style>
+
+        body {
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #eeeeee;
+            /*border: 1px solid black;*/
+            height: 30px;
+        }
+
+        #id_main_div {
+            order   : 2;
+            position: fixed;
+            top     : 30px;
+            right   : 0;
+            bottom  : 10px;
+            left    : 0;
+            display     : flex;
+            flex-flow   : row;
+            /*height      : 100%;*/
+            /*padding-bottom: 45px;*/
+            padding: 5px;
+            /*background-color: #ddffff;*/
+        }
+
+
+        .layer_box_custom {
+            border  : 1px solid #333;
+            height  : 100%;
+            padding : 0px;
+            margin  : 0px;
+        }
+        #id_div_box_left  { width: 40%; margin-right: 0px; }
+        #id_div_box_right { width: 60%; border-left: 0px;
+            padding: 5px;
+            display: flex;
+            flex-flow: column;
+            background-color: rgb(255, 255, 238);
+        }
+
+
+        
+        
+    </style>
+
+</head>
+
+<body ng-controller="CTRL_general as C1">
+
+    <header >
+        <a href="#/" >Home</a> | <a href="#/peli" >Peli</a> | <a href="#/users" >Users</a>    
+        <span ng-click="C1.seleccionarPeli(32);">SEL</span> |
+        <span>{{ id_peli_sel }}</span>
+        <input type='text' ng-model='var1' />
+        <input type='text' ng-model='var2' />
+    </header>
+
+    
+    
+    <div id="id_main_div">
+        <div id="id_div_box_left" 
+             class="layer_box_custom"
+             class="directive"
+             llista-pelis>
+        </div>
+        <div id="id_div_box_right" class="layer_box_custom">
+            <info-peli></info-peli>
+        </div>
+    </div>
+
+    <!-- <footer style="background-color: #eeeeee; border: 1px solid black;">Pie de página</footer> -->
+
+
+
+
+</body>
+</html>
