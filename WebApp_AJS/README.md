@@ -80,7 +80,7 @@ The next goal will be a RESTful API.
 
 # Functionality
 
-The UI is supported with as a CRUD in agreement to the following diagram:
+The UI works as a CRUD in agreement to the following diagram:
 
 <img height="500" src="https://raw.githubusercontent.com/joelbarba/CAT_PELIS/master/Diagrama%20CRUD.png"/>
 
