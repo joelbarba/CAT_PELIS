@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Llista de pelis</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">-->
+<!--    <script src="bootstrap/js/bootstrap.js"></script>-->
+
+<!--    <link rel="stylesheet" href="main_styles.css">-->
+
+    <!-- src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" -->
+    <script src="JS/lib/jquery.js"></script>
+<!--    <script src="JS/lib/angular.js"></script>-->
+<!--    <script src="JS/lib/angular-route.js"></script>-->
+<!--    <script src="JS/lib/angular-css.js"></script>-->
+
+    <!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
+
+
+	<script language="Javascript">
+        $(function() {
+
+            
+            var llista = [];
+            llista = [[1,2,[3]],4];
+            llista = [1, [2, 3, [[4, 5], 6], 7, [[[[8], 9]]]], 10];
+//            llista = [[1,2,[3]],4];
+            result = [];
+            
+
+            
+            
+
+            /********************************************************************************************/
+            /*  Recursive function to flat a nested array                                               */
+            /*  - param1: element -> This is the variable to check. It can be an array or not.          */
+            /*                       If this is an array, interate and check each of its elements.      */
+            /*                                                                                          */
+            /*  - return: It returns the flatered array in each level of recursivity.                   */
+            /*            If element is an array, flat and concat each of its elements to a new array.  */
+            /*            If not, just return an array with one element (to concat in parent level)     */
+            /********************************************************************************************/
+            function get_flatten_array(nested_array) {
+                var flattened_array = [];
+                
+                try {
+                    if (nested_array.constructor === Array) {
+                        for (index in nested_array) flattened_array = flattened_array.concat( get_flatten_array(nested_array[index]) );
+                    } else {
+                        flattened_array.push(nested_array);
+                    }
+                } catch(err) {
+                    console.log('Error in get_flatten_array: ' + err + ', with nested_array = ' + nested_array);
+                } finally {
+                    return flattened_array;
+                }
+            }
+
+
+            /********************************************************************************************/
+            /*  Recursive function to flatten all nested elements of an array.                          */
+            /*                                                                                          */
+            /*  - Each recursive iteration returns a new the flatered array with all its nested levels. */
+            /*  - The flattened array is built by a plain concatenation of each return callback.        */
+            /********************************************************************************************/            
+            Array.prototype.get_flattened_array = function() {
+                var nested_array = this;
+                var flattened_array = [];   // Current level flattened array
+
+                try {
+                    for (var index = 0; index < nested_array.length; index++) {
+                        if (nested_array[index] !== null && nested_array[index].constructor === Array) {
+                            // If the element is an array, get its flattened array and concat it to the curren level flattened array
+                            flattened_array = flattened_array.concat( nested_array[index].get_flattened_array() );
+                        } else {
+                            // If it is not an array, just push it
+                            flattened_array.push(nested_array[index]);
+                        }
+                    }
+                } catch(err) {
+                    console.log('Error in get_flattened_array: ' + err + ', with nested_array = ' + nested_array);
+                } finally {
+                    return flattened_array;
+                }
+
+            }
+
+/*                        // Some test
+            console.log([[1,2,[3]],4].get_flattened_array());
+            console.log([1, [2, 3, [[4, 5], 6], 7, [[[[8], 9]]]], 10].get_flattened_array());
+            console.log([1, [null, 3, [[4, 5], 60.5], 'ddd', 7, [[[[8], 9]]]], 10, { x: 20, y: [1, 2, 3]} ].get_flattened_array());
+            console.log([null].get_flattened_array());
+            console.log([].get_flattened_array());
+
+
+            // Automated test            
+            for (var test_num = 0; test_num <= 20; test_num++){
+                var nested_array = set_nested_array(0);
+                console.log('Test ' + test_num + '; nested_array = ');
+                console.log(nested_array);
+                console.log('Flattened array -> ' + nested_array.get_flattened_array());
+            }
+
+*/
+            /************************************/
+            /*  Create random nested arrays     */
+            /************************************/
+            function set_nested_array(level) {
+
+                var max_elements = Math.floor((Math.random() * 8));    // Set a random length array
+                var max_level = 10;                                     // Stop recursivity at 10 level
+                var nested_array = [];
+
+                for (var index = 0; index < max_elements; index++) {
+                    if (level <= max_level && Math.floor((Math.random() * 3)) == 0) { // 33% probability of new nested array
+                        nested_array.push(set_nested_array(level + 1));
+                    } else {
+                        switch (Math.floor((Math.random() * 8))) {
+                            case 0:	nested_array.push(null);
+                            case 1:	nested_array.push('string');
+                            case 2:	nested_array.push({ prop1: 'x' });
+                            default:	nested_array.push(Math.floor((Math.random() * 100)));
+                        }
+
+                    }
+                }                
+                return nested_array;                
+            }
+
+
+//            We have some customer records in a text file (customers.json) -- one customer per line, JSON-encoded. 
+//            We want to invite any customer within 100km of our Dublin office (GPS coordinates 53.3381985, -6.2592576) for 
+//            some food and drinks on us. Write a program that will read the full list of customers and output the names and user 
+//            ids of matching customers (within 100km), sorted by user id (ascending).
+            
+            var costumers = [
+                { id: 1, name: 'Juanito1', position: { x: 52.42, y: -6.43 } },
+                { id: 2, name: 'Juanito2', position: { x: 53.42, y: -5.43 } },
+                { id: 3, name: 'Juanito3', position: { x: 54.42, y: -4.43 } },
+                { id: 4, name: 'Juanito4', position: { x: 55.42, y: -3.43 } }
+            ];
+//            alert (costumers);
+            
+//            alert(degree_to_rad(180));
+            
+            var d = calc_distance({ la: 52, lo: 9 });
+            alert (d);
+        });
+
+        
+
+        
+
+        /****************************************************/
+        /*  Calculate the distance from the Dublin office   */
+        /*  - param1: position obj { la: 999, lo: 999 }     */
+        /*  - return: calculated distance in kms            */
+        /****************************************************/
+        function calc_distance(c_pos) {
+            var earth_rad = 6378.137;
+            var h_pos = { la: 53.3381985, lo: -6.2592576 }; // Dublin office position
+
+            // Conversion degree <-> radiant
+            function degree_to_rad(deg_ang) { return deg_ang * Math.PI / 180; }
+            function rad_to_degree(rad_ang) { return rad_ang * 180 / Math.PI; }
+
+            // Apply sin/cos with degree angle
+            function sin(deg_ang) { return Math.sin(degree_to_rad(deg_ang)); }
+            function cos(deg_ang) { return Math.cos(degree_to_rad(deg_ang)); }
+            
+            
+            var dif = { la: h_pos.la - c_pos.la, lo: h_pos.lo - c_pos.lo }; // Difference vector between 2 points
+            
+            // The formula (https://en.wikipedia.org/wiki/Great-circle_distance) is:
+            // distance = Rad * 2 * asin(  sqrt( sin^2(dif.la/2) + cos(h_pos.la) * cos(c_pos.la) * sin^2(dif.lo/2) )  )
+            //                             \------------------------------ sin_val -------------------------------/
+            
+            var sin_val = Math.sqrt(
+                            Math.pow(sin(dif.la / 2), 2)
+                            + cos(h_pos.la)
+                              * cos(c_pos.la)
+                              * Math.pow(sin(dif.lo / 2), 2)
+                            );            
+            
+            // Simplify the formula changing asin by atan:
+            
+            // tan(asin(x)) = x / sqrt(1-x^2) ---> asin(x) = atan( x/sqrt(1-x^2) )
+            // If x = sin_val, then: asin(sin_val) = atan( sin_val/sqrt(1-sin_val^2) ) --> cos_val = sqrt(1-sin_val^2)
+            
+            var cos_val = Math.sqrt(1 - Math.pow(sin_val, 2));
+            var distance = earth_rad * 2 * Math.atan2(sin_val, cos_val);
+            
+            return Math.abs(distance);
+            
+        }
+        
+
+        
+        
+//        https://en.wikipedia.org/wiki/Great-circle_distance
+//        http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+//        http://www.movable-type.co.uk/scripts/latlong.html
+//        https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
+        
+        
+        
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6378.137; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}        
+        
+
+
+    </script>
+
+    <style>
+    </style>
+
+</head>
+
+<body>
+
+
+
+</body>
+</html>

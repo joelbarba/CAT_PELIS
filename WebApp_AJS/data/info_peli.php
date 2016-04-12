@@ -36,12 +36,9 @@
 		$resultat = "ok";
 	}
 
-
-
-
-	
 	pg_close ($dbconn);
 
+// ---------------------------------------------------------------------
 
 	echo '{ "result_code"  : "' . $resultat   . '",
             "desc_error"   : "' . $desc_error . '",

@@ -80,23 +80,39 @@
 <body ng-controller="CTRL_general as C1">
 
     <header >
+        <!--
         <a href="#/" >Home</a> | <a href="#/peli" >Peli</a> | <a href="#/users" >Users</a>    
         <span ng-click="C1.seleccionarPeli(32);">SEL</span> |
-        <span>{{ id_peli_sel }}</span>
-        <input type='text' ng-model='var1' />
-        <input type='text' ng-model='var2' />
+        <span>id_sel = {{id_sel}}</span>
+        <span>  index_sel = {{index_sel}}</span>
+        -->
     </header>
 
     
     
     <div id="id_main_div">
-        <div id="id_div_box_left" 
-             class="layer_box_custom"
-             class="directive"
-             llista-pelis>
+        
+        <div id="id_div_box_left" class="layer_box_custom">
+            
+            <llista-pelis 
+                param1="id_sel" 
+                param2="index_sel" 
+                on_sel_peli="load_info_peli(elem, ind)">
+            </llista-pelis>
+            
         </div>
+        
+        
         <div id="id_div_box_right" class="layer_box_custom">
-            <info-peli></info-peli>
+            
+            <info-peli 
+                param1="id_sel" 
+                param2="index_sel"
+                renom_peli_llista="reload_nom_peli(id_peli, nou_titol)"
+                add_peli_llista="add_new_peli(peli)"
+                del_peli_llista="delete_peli(id)">
+            </info-peli>
+            
         </div>
     </div>
 

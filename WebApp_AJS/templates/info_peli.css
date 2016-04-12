@@ -13,7 +13,7 @@
 /*            border      : 1px solid #aaa; */
     width       : 100%; 
     flex        : 07%; 
-    min-height  : 35px; 
+    min-height  : 45px; 
     position    : relative;
 }
 
@@ -54,10 +54,48 @@
 }
 
 
-#id_div_box_info_peli_bottom {
+#id_div_box_info_peli_llista_fitxers {
     border : 1px solid #aaa; 
     background-color: rgb(255, 255, 204);
     width:  100%; 
     height: 100%; 
     flex: 35%;
 }
+
+#id_div_box_info_peli_bottom {
+    position: relative; 
+    left: 0px; 
+    top: 10px;
+    overflow: hidden;
+    display: flex; 
+    flex-flow: row-reverse wrap; 
+    align-items: center;
+}
+
+
+.boto_okcan {
+    margin-right: 10px;
+    border: 2px solid #666;
+}
+
+.boto_crud {
+    border: 2px solid #666;
+    padding: 5px;
+    padding-right: 10px;
+    margin-left: 5px;
+/*    margin-left: 5px;*/
+}
+.img_boto_crud {
+    width:22px; 
+    height:22px; 
+    margin-left:5px;
+}
+
+.label_mode {
+    background-color: #d9edf7;
+    color: #31708f;
+    padding: 2px 7px 2px;
+    border: 2px solid #bce8f1;
+    border-radius: 4px;    
+}
+

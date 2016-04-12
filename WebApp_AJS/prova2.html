@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invited customers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!--    <script src="JS/lib/jquery.js"></script>-->
+<!--    <script src="JS/lib/angular.js"></script>-->
+<!--    <script src="JS/lib/angular-route.js"></script>-->
+<!--    <script src="JS/lib/angular-css.js"></script>-->
+<!--    <script data-main="scripts/main" src="scripts/require.js"></script>-->
+
+
+	<script language="Javascript">
+        
+        app = {};
+        app.dublin_office_position = { la: 53.3381985, lo: -6.2592576 };    // // Current Dublin office coordenades
+        app.max_distance = 100;         // Set 100km distance to select the customers
+        app.invited_customers = [];     // Array to set the invited customers (ordered)
+        app.customer_list = [
+             {"latitude": "52.986375", "user_id": 12, "name": "Christina McArdle", "longitude": "-6.043701"}
+            ,{"latitude": "51.92893", "user_id": 1, "name": "Alice Cahill", "longitude": "-10.27699"}
+            ,{"latitude": "51.8856167", "user_id": 2, "name": "Ian McArdle", "longitude": "-10.4240951"}
+            ,{"latitude": "52.3191841", "user_id": 3, "name": "Jack Enright", "longitude": "-8.5072391"}
+            ,{"latitude": "53.807778", "user_id": 28, "name": "Charlie Halligan", "longitude": "-7.714444"}
+            ,{"latitude": "53.4692815", "user_id": 7, "name": "Frank Kehoe", "longitude": "-9.436036"}
+            ,{"latitude": "54.0894797", "user_id": 8, "name": "Eoin Ahearn", "longitude": "-6.18671"}
+            ,{"latitude": "53.038056", "user_id": 26, "name": "Stephen McArdle", "longitude": "-7.653889"}
+            ,{"latitude": "54.1225", "user_id": 27, "name": "Enid Gallagher", "longitude": "-8.143333"}
+            ,{"latitude": "53.1229599", "user_id": 6, "name": "Theresa Enright", "longitude": "-6.2705202"}
+            ,{"latitude": "52.2559432", "user_id": 9, "name": "Jack Dempsey", "longitude": "-7.1048927"}
+            ,{"latitude": "52.240382", "user_id": 10, "name": "Georgina Gallagher", "longitude": "-6.972413"}
+            ,{"latitude": "53.2451022", "user_id": 4, "name": "Ian Kehoe", "longitude": "-6.238335"}
+            ,{"latitude": "53.1302756", "user_id": 5, "name": "Nora Dempsey", "longitude": "-6.2397222"}
+            ,{"latitude": "53.008769", "user_id": 11, "name": "Richard Finnegan", "longitude": "-6.1056711"}
+            ,{"latitude": "53.1489345", "user_id": 31, "name": "Alan Behan", "longitude": "-6.8422408"}
+            ,{"latitude": "53", "user_id": 13, "name": "Olive Ahearn", "longitude": "-7"}
+            ,{"latitude": "51.999447", "user_id": 14, "name": "Helen Cahill", "longitude": "-9.742744"}
+            ,{"latitude": "52.966", "user_id": 15, "name": "Michael Ahearn", "longitude": "-6.463"}
+            ,{"latitude": "52.366037", "user_id": 16, "name": "Ian Larkin", "longitude": "-8.179118"}
+            ,{"latitude": "54.180238", "user_id": 17, "name": "Patricia Cahill", "longitude": "-5.920898"}
+            ,{"latitude": "53.0033946", "user_id": 39, "name": "Lisa Ahearn", "longitude": "-6.3877505"}
+            ,{"latitude": "52.228056", "user_id": 18, "name": "Bob Larkin", "longitude": "-7.915833"}
+            ,{"latitude": "54.133333", "user_id": 24, "name": "Rose Enright", "longitude": "-6.433333"}
+            ,{"latitude": "55.033", "user_id": 19, "name": "Enid Cahill", "longitude": "-8.112"}
+            ,{"latitude": "53.521111", "user_id": 20, "name": "Enid Enright", "longitude": "-9.831111"}
+            ,{"latitude": "51.802", "user_id": 21, "name": "David Ahearn", "longitude": "-9.442"}
+            ,{"latitude": "54.374208", "user_id": 22, "name": "Charlie McArdle", "longitude": "-8.371639"}
+            ,{"latitude": "53.74452", "user_id": 29, "name": "Oliver Ahearn", "longitude": "-7.11167"}
+            ,{"latitude": "53.761389", "user_id": 30, "name": "Nick Enright", "longitude": "-7.2875"}
+            ,{"latitude": "54.080556", "user_id": 23, "name": "Eoin Gallagher", "longitude": "-6.361944"}
+            ,{"latitude": "52.833502", "user_id": 25, "name": "David Behan", "longitude": "-8.522366"}
+        ];
+
+        /*****************************************************************************/
+        /*  Iterate the customer_list and calculate each distance                    */
+        /*  - It adds a new property for each customer: distance_from_dublin_office  */
+        /*****************************************************************************/
+        app.set_all_distances = function () {
+
+            for (index in this.customer_list) {
+                var customer_position = { la: this.customer_list[index].latitude, 
+                                          lo: this.customer_list[index].longitude  };
+                
+                this.customer_list[index].distance_from_dublin_office = 
+                        distance_between_2_positions(this.dublin_office_position, customer_position);
+            };     
+        };
+
+        /*****************************************************************************/
+        /*  Create a new customer list with the closer customers, and order them     */
+        /*  It uses the parameter app.max_distance                                   */
+        /*****************************************************************************/
+        app.select_invited_customers = function () {
+
+            // Select invited customers                
+            for (index in this.customer_list) {
+                // If the customer is within max_distance, push it to the VIP list
+                if (this.customer_list[index].distance_from_dublin_office <= this.max_distance) {
+                    this.invited_customers.push( this.customer_list[index] );
+                }
+            };
+
+            // Order the list by user_id (ascending)
+            this.invited_customers.sort(function(former, latter) {
+                return former.user_id - latter.user_id; 
+            });
+        }            
+
+        /*****************************************************************************/
+        /*  Output the customer_list on html table at the end of the document        */
+        /*****************************************************************************/
+        app.print_invited_customers = function() {
+
+            $('body').append('<table> <thead> <tr> <th>ID</th> <th>Customer</th> <th>Distance</th> </tr> </thead> <tbody>');
+
+            for (index in this.invited_customers) {
+                $('tbody:last').append('<tr>'
+                    + '<td>' + this.invited_customers[index].user_id + '</td>'
+                    + '<td>' + this.invited_customers[index].name + '</td>'
+                    + '<td>' + this.invited_customers[index].distance_from_dublin_office + '</td>'
+                    + '</tr>');
+            }
+
+            $('body').append('</tbody> </table>');      
+        };
+        
+
+        
+
+        /****************************************************/
+        /*  Calculate the distance between 2 points         */
+        /*  - param1: position1 obj { la: 999, lo: 999 }    */
+        /*  - param2: position2 obj { la: 999, lo: 999 }    */
+        /*  - return: calculated distance in kms            */
+        /****************************************************/
+        function distance_between_2_positions(position1, position2) {
+            var earth_rad = 6378.137;
+
+            // Conversion degree <-> radiant
+            function degree_to_rad(deg_ang) { return deg_ang * Math.PI / 180; }
+            function rad_to_degree(rad_ang) { return rad_ang * 180 / Math.PI; }
+
+            // Apply sin/cos with degree angle
+            function sin(deg_ang) { return Math.sin(degree_to_rad(deg_ang)); }
+            function cos(deg_ang) { return Math.cos(degree_to_rad(deg_ang)); }
+            
+            try {
+                var dif = { la: position1.la - position2.la, lo: position1.lo - position2.lo }; // Difference vector between 2 points
+
+                // The formula (https://en.wikipedia.org/wiki/Great-circle_distance) is:
+                // distance = Rad * 2 * asin(  sqrt( sin^2(dif.la/2) + cos(position1.la) * cos(position2.la) * sin^2(dif.lo/2) )  )
+                //                             \---------------------------------- sin_val -----------------------------------/
+
+                var sin_val = Math.sqrt(
+                                Math.pow(sin(dif.la / 2), 2)
+                                + cos(position1.la)
+                                  * cos(position2.la)
+                                  * Math.pow(sin(dif.lo / 2), 2)
+                                );            
+
+                // Simplify the formula changing asin by atan:            
+                //   tan(asin(x)) = x / sqrt(1-x^2) ---> asin(x) = atan( x/sqrt(1-x^2) )
+                //   x = sin_val, then: asin(sin_val) = atan( sin_val/sqrt(1-sin_val^2) ) --> cos_val = sqrt(1-sin_val^2)
+
+                var cos_val = Math.sqrt(1 - Math.pow(sin_val, 2));
+                var distance = earth_rad * 2 * Math.atan2(sin_val, cos_val);
+
+                return Math.abs(distance);
+
+            } catch(err) {
+                console.log('Error in distance_between_2_positions: ' + err);
+                return null;
+            }
+            
+        }
+        
+        
+        
+        
+        /**************************/
+        /*  On load function      */
+        /**************************/
+        $(function() {
+            
+            try {
+                app.set_all_distances();
+                app.select_invited_customers();
+                app.print_invited_customers();
+                
+            } catch(err) {
+                console.log('General error: ' + err);
+            }
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <h1>Invited customers</h1>
+</body>
+</html>

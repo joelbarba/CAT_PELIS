@@ -1,4 +1,12 @@
 
+script per conf + restart:	sh ~/conf_apache
+
+sudo gedit /etc/apache2/apache2.conf
+sudo /etc/init.d/apache2 restart
+
+
+-------------------------------
+
 
 -- Configuració ALIAS al servidor Apache (sudo gedit /etc/apache2/sites-available/default) :
 

@@ -1,15 +1,33 @@
-
+<div id="id_info_box">
 <div id="id_div_box_info_peli">
     <div id="id_div_box_info_peli_titol" >                   
-        <div id="id_div_box_info_peli_nom">
-            {{ info_peli.id_peli }} : {{ info_peli.titol_old }}</div>
+        <div id="id_div_box_info_peli_nom" >
+            <strong ng-show="CTRL_crud_box.mode=='add'" class="label_mode">NEW</strong>
+            <strong ng-show="CTRL_crud_box.mode=='mod'" class="label_mode">EDIT</strong>
+            <span ng-show="CTRL_crud_box.info_peli">
+                {{ CTRL_crud_box.info_peli_lock.titol + ' (' + CTRL_crud_box.info_peli.id_peli + ')' }}
+            </span>
+        </div>
         <div id="id_div_box_info_peli_menu">
-            <img id="id_img_add_peli" src="img/icons/add.png"  style="width:22px; height:22px; margin-left:15px;" title="Afegir">
-            <img id="id_img_del_peli" src="img/icons/del.png"  style="width:22px; height:22px; margin-left:15px;" title="Eliminar">
-            <img id="id_img_mod_peli" src="img/icons/edit.png" style="width:22px; height:22px; margin-left:15px;" title="Modificar">
+            <button id="id_button_add" type="button" class="btn btn-default boto_crud" ng-click="CTRL_crud_box.change_mode('add')">
+                <img src="img/icons/add.png" class="img_boto_crud" title="Afegir">
+                New
+            </button>
+            <button id="id_button_cop" type="button" class="btn btn-default boto_crud" ng-click="CTRL_crud_box.change_mode('cpy')">
+                <img src="img/icons/copy.png" class="img_boto_crud" title="Afegir">
+                Copy
+            </button>            
+            <button id="id_button_del" type="button" class="btn btn-default boto_crud" ng-click="CTRL_crud_box.eliminar()">
+                <img src="img/icons/del.png" class="img_boto_crud" title="Eliminar">
+                Del
+            </button>
+            <button id="id_button_mod" type="button" class="btn btn-default boto_crud" ng-click="CTRL_crud_box.change_mode('mod')">
+                <img src="img/icons/edit.png" class="img_boto_crud" title="Modificar">
+                Edit
+            </button>
         </div>
     </div>
-    <div id="id_div_box_info_peli_cont">
+    <div id="id_div_box_info_peli_cont"  ng-hide="CTRL_crud_box.mode=='off'">
         <div id="id_div_box_info_peli_left">
             <div id="id_div_box_info_peli_caratula"
                  >
@@ -22,15 +40,15 @@
             <input id="info_peli_1" value="¿?" style="display:none; width:28px;  text-align: center; margin-right:10px;">
 
             <p> Títol :  <br>
-                <input ng-model="info_peli.titol" class="info_peli info_peli_input" id="info_peli_2" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
+                <input ng-model="CTRL_crud_box.info_peli.titol" class="info_peli info_peli_input" id="info_peli_2" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
             </p>
 
             <p> Títol original : <br>
-                <input ng-model="info_peli.titol_original" class="info_peli info_peli_input" id="info_peli_3" value="" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
+                <input ng-model="CTRL_crud_box.info_peli.titol_original" class="info_peli info_peli_input" id="info_peli_3" value="" style="width: 95%; max-width: 250px; margin-top: 2px; border-color: rgb(136, 136, 136);">
             </p>
 
             <p> Idioma audio :
-                <select ng-model="info_peli.idioma_audio" class="info_peli info_peli_sel" id="info_peli_4" name="info_peli_4" style="margin-right: 15px;">
+                <select ng-model="CTRL_crud_box.info_peli.idioma_audio" class="info_peli info_peli_sel" id="info_peli_4" name="info_peli_4" style="margin-right: 15px;">
                     <option value="" selected=""></option>
                     <option value="ESP">ESP</option>
                     <option value="CAT">CAT</option>
@@ -40,7 +58,7 @@
             </p>
 
             <p> Idioma subtitols :
-                <select ng-model="info_peli.idioma_subtitols" class="info_peli info_peli_sel" id="info_peli_5" name="info_peli_5">
+                <select ng-model="CTRL_crud_box.info_peli.idioma_subtitols" class="info_peli info_peli_sel" id="info_peli_5" name="info_peli_5">
                     <option value="" selected=""></option>
                     <option value="ESP">ESP</option>
                     <option value="CAT">CAT</option>
@@ -50,7 +68,7 @@
             </p>
 
             <p> Vídeo :
-                <select ng-model="info_peli.qualitat_video" class="info_peli info_peli_sel" id="info_peli_6" name="info_peli_6" style="margin-right: 15px;">
+                <select ng-model="CTRL_crud_box.info_peli.qualitat_video" class="info_peli info_peli_sel" id="info_peli_6" name="info_peli_6" style="margin-right: 15px;">
                     <option value="" selected=""></option>
                     <option value="BR-Rip">BR-Rip</option>
                     <option value="DVD-Rip">DVD-Rip</option>
@@ -60,7 +78,7 @@
             </p>
 
             <p> Audio :
-                <select ng-model="info_peli.qualitat_audio" class="info_peli info_peli_sel" id="info_peli_7" name="info_peli_7">
+                <select ng-model="CTRL_crud_box.info_peli.qualitat_audio" class="info_peli info_peli_sel" id="info_peli_7" name="info_peli_7">
                     <option value="" selected=""></option>
                     <option value="BR-Rip">BR-Rip</option>
                     <option value="DVD-Rip">DVD-Rip</option>
@@ -69,21 +87,40 @@
                 </select>
             </p>
 
-            <p> Any estrena : 		<input ng-model="info_peli.any_estrena"  class="info_peli info_peli_input" id="info_peli_8" value="9999" style="width: 50px; text-align: center; margin-right: 15px; border-color: rgb(136, 136, 136);"> </p>
-            <p> Director : 			<input ng-model="info_peli.director"     class="info_peli info_peli_input" id="info_peli_9" value="director" style="width: 20%; min-width: 100px; text-align: center; border-color: rgb(136, 136, 136);"> </p>
+            <p> Any estrena : 		<input ng-model="CTRL_crud_box.info_peli.any_estrena"  class="info_peli info_peli_input" id="info_peli_8" value="9999" style="width: 50px; text-align: center; margin-right: 15px; border-color: rgb(136, 136, 136);"> </p>
+            <p> Director : 			<input ng-model="CTRL_crud_box.info_peli.director"     class="info_peli info_peli_input" id="info_peli_9" value="director" style="width: 20%; min-width: 100px; text-align: center; border-color: rgb(136, 136, 136);"> </p>
 
             <img id="id_link_imdb" style="width:80px; margin-bottom: 2px;" 
-                 data_href="{{ info_peli.url_imdb }}"
-                 ng-src="{{ info_peli.img_imdb }}">
+                 data_href="{{ CTRL_crud_box.info_peli.url_imdb }}"
+                 ng-src="{{ CTRL_crud_box.info_peli.img_imdb }}">
 
             <img id="id_link_film"  style="width:150px; margin-bottom: 2px;" 
-                 data_href="{{ info_peli.url_film }}"
-                 ng-src="{{ info_peli.img_film }}">
+                 data_href="{{ CTRL_crud_box.info_peli.url_film }}"
+                 ng-src="{{ CTRL_crud_box.info_peli.img_film }}">
         </div>        
     </div>
 </div>
-<div id="id_div_box_info_peli_bottom">
-        <input type='text' ng-model='var1' />
-        <input type='text' ng-model='var2' />
-        {{ info_peli }}
+<div id="id_div_box_info_peli_llista_fitxers"  ng-hide="CTRL_crud_box.mode=='off'">
+    <p style="padding: 10px;">de moment buit</p>
+<!--    
+    <p> id_sel : {{ id_sel }} </p>
+        <p> index_sel : {{ index_sel }} </p>
+        <p> Cont : {{ CTRL_crud_box.info_peli }} </p>
+        <p id="id_info_waiting"></p>
+
+    <button type="button" class="btn" ng-click="CTRL_crud_box.change_mode('off')">OFF</button>
+    <button type="button" class="btn" ng-click="CTRL_crud_box.change_mode('con')">CON</button>
+    <button type="button" class="btn" ng-click="CTRL_crud_box.change_mode('add')">ADD</button>
+    <button type="button" class="btn" ng-click="CTRL_crud_box.change_mode('mod')">MOD</button>
+-->
+</div>
+    
+<div id="id_div_box_info_peli_bottom"  ng-hide="CTRL_crud_box.mode=='off'">
+
+    <button ng-click="CTRL_crud_box.end_trans(true)"  id="id_button_ok"  type="button" class="btn btn-success boto_okcan">OK</button>
+    <button ng-click="CTRL_crud_box.end_trans(false)" id="id_button_can" type="button" class="btn btn-danger boto_okcan">Cancel</button>
+
+</div>    
+
+    
 </div>

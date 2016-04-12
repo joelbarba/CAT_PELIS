@@ -1,6 +1,10 @@
 <div id="id_cont_llista_pelis" 
      ng-init="CTRL_llista_pelis.loadLlistaPelis();">
-
+    <!--
+    id_sel={{ id_sel }}
+    index_sel={{ index_sel }}
+-->
+    
     <table id="id_taula_llista_pelis">
         <thead>
           <tr>
@@ -9,15 +13,17 @@
             <th style="width: 05%"></th>
           </tr>
         </thead>
+        <tbody id="id_content_list_pelis">
+            <tr ng-repeat="(index_peli, peli) in CTRL_llista_pelis.llista_pelis">
 
-        <tbody>
-            <tr ng-repeat="peli in CTRL_llista_pelis.llista_pelis">
+                <td ng-click="onSelPeli({elem: peli, ind: index_peli});" 
+                    ng-class="{class_fila_peli_sel: peli.id === id_sel}"
+                    >{{ peli.id }}</td>
 
-                <td ng-click="CTRL_llista_pelis.selectPeli(peli.id);" 
-                    ng-class="{class_fila_peli_sel: peli.id === CTRL_llista_pelis.id_peli_sel}">{{ peli.id }}</td>
-
-                <td ng-click="CTRL_llista_pelis.selectPeli(peli.id);" 
-                    ng-class="{class_fila_peli_sel: peli.id === CTRL_llista_pelis.id_peli_sel}">{{ peli.titol }}</td>
+                <td ng-click="onSelPeli({elem: peli, ind: index_peli})" 
+                    ng-class="{class_fila_peli_sel: peli.id === id_sel}"
+                    >{{ peli.titol }}
+                </td>
 
                 <td></td>
             </tr>
