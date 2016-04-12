@@ -10,7 +10,7 @@ This is a Simple Page Web application, so the index.html main page is load once 
 The main page is fluid responsive, but there's only one layer for all devices (it doesn't change the format depending on the screen, it is just resized).
 
 ### Overview
-<img height="500" src="https://raw.githubusercontent.com/joelbarba/DUB_BUS/master/sample.jpg"/>
+<img height="500" src="https://raw.githubusercontent.com/joelbarba/CAT_PELIS/master/CAT_PELIS.png"/>
 
 ### AngularJS tag templates
 
@@ -77,6 +77,13 @@ The response is always a JSON object with the pattern:<br/>
     }
 
 The next goal will be a RESTful API.
+
+# Functionality
+
+The UI is supported with as a CRUD in agreement to the following diagram:
+
+<img height="500" src="https://raw.githubusercontent.com/joelbarba/CAT_PELIS/master/Diagrama%20CRUD.png"/>
+
 
 
 
